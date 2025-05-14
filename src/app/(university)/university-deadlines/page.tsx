@@ -3,7 +3,7 @@ import BreadcrumbTwo from "@/components/breadcrumb/breadcrumb-two";
 import DeadlinesArea from "./_components/deadlines-area";
 
 export const metadata: Metadata = {
-  title: "University Deadlines - Acadia",
+  title: "Deadlines - Yéba school",
 };
 
 export default function UniversityDeadlinesPage() {

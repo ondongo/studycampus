@@ -6,7 +6,7 @@ import AboutOne from "@/components/about/about-one";
 import TestimonialTwo from "@/components/testimonial/testimonial-two";
 
 export const metadata: Metadata = {
-  title: "Home University Classic - Acadia",
+  title: "yéba school",
 };
 
 export default function HomePage() {

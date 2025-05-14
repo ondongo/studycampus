@@ -75,7 +75,7 @@ export default function FooterTwo() {
                                  <span>
                                     <Email />
                                  </span>
-                                 acadia@gmail.com</a>
+                                 Yébaschoo@gmail.com</a>
                            </div>
                            <div className="tp-footer-app">
                               <a href="#">
