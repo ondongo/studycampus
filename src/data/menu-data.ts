@@ -1,22 +1,14 @@
 import { IMenu, IMenuDT2 } from "@/types/menu-d-t";
 
 const menu_data: IMenu[] = [
+
   {
     id: 1,
-    title: "Accueil",
-    link: "#",
-  },
-  {
-    id: 2,
-    title: "Bourses",
-    link: "#",
-  },
-  {
-    id: 3,
     title: "Admissions",
     link: "#",
     dropdown_menus: [
       { id: 1, title: "Comment postuler", link: "/university-apply" },
+      { id: 1, title: "Bourses", link: "/university-apply" },
       { id: 2, title: "Dates et délais", link: "/university-deadlines" },
       { id: 3, title: "Lancer l'accompagnement", link: "/university-application-form" },
     ],

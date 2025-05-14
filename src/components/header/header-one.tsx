@@ -12,9 +12,8 @@ export default function HeaderOne() {
   return (
     <>
       <header className="header-area tp-header-transparent p-relative">
-         
         {/* header top start*/}
-         <HeaderTopArea />
+        <HeaderTopArea />
         {/* header top end */}
 
         <HeaderStickyWrapper>
@@ -23,32 +22,38 @@ export default function HeaderOne() {
               <div className="col-xxl-2 col-xl-2 col-lg-6 col-md-6 col-6">
                 <div className="tp-header-logo-1 tp-header-logo">
                   <Link href="/">
-                    <Image className="logo-1" src={logo} alt="logo" priority   style={{ height: "80px" , width:"180px"}} />
+                    <Image
+                      className="logo-1"
+                      src={logo}
+                      alt="logo"
+                      priority
+                      style={{ height: "80px", width: "180px" }}
+                    />
                     <Image
                       className="logo-2"
                       src={logo_black}
                       alt="logo"
                       priority
-                      style={{ height: "80px" , width:"180px"}}
+                      style={{ height: "80px", width: "180px" }}
                     />
                   </Link>
                 </div>
               </div>
-              <div className="col-xxl-8 col-xl-7 d-none d-xl-block">
-                <div className="main-menu text-end">
-                  {/* nav menus start */}
-                  <NavMenus />
-                  {/* nav menus end */}
-                </div>
-              </div>
-              <div className="col-xxl-2 col-xl-3 col-lg-6 col-md-6 col-6">
+
+              <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-10">
                 <div className="tp-header-contact d-flex align-items-center justify-content-end">
-          
+                  <div className="main-menu text-end">
+                    {/* nav menus start */}
+                    <NavMenus />
+                    {/* nav menus end */}
+                  </div>
                   <div className="tp-header-btn d-none d-md-block ml-30">
-                    <Link href="/university-application-form">Booker un rdv</Link>
+                    <Link href="/university-application-form">
+                      Booker un rdv
+                    </Link>
                   </div>
                   <div className="tp-header-bar d-xl-none ml-30">
-                    <OffcanvasButton/>
+                    <OffcanvasButton />
                   </div>
                 </div>
               </div>
@@ -58,7 +63,7 @@ export default function HeaderOne() {
       </header>
 
       {/* mobile offcanvas */}
-      <div id="offcanvas-sidebar"/>
+      <div id="offcanvas-sidebar" />
       {/* mobile offcanvas */}
     </>
   );
