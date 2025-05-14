@@ -1,16 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import logo from '@/assets/img/logo/logoyeba.png';
-import { BehanceSvg, CloseThreeSvg, DribbleSvg, InstagramSvg, YoutubeTwoSvg } from "@/components/svg";
+import { BehanceSvg, CloseThreeSvg, DribbleSvg, FbSvg, InstagramSvg, YoutubeSvg, YoutubeTwoSvg } from "@/components/svg";
 import OffcanvasMenu from "./offcanvas-menu";
 import OffcanvasMenuTwo from "./offcanvas-menu-2";
 
 
 const galleryData = [
    { link: "https://www.instagram.com/", src: "/assets/img/menu/offcanvas/offcanvas-1.jpg" },
-   { link: "https://www.instagram.com/", src: "/assets/img/menu/offcanvas/offcanvas-2.jpg" },
-   { link: "https://www.instagram.com/", src: "/assets/img/menu/offcanvas/offcanvas-3.jpg" },
-   { link: "https://www.instagram.com/", src: "/assets/img/menu/offcanvas/offcanvas-4.jpg" },
 ];
 
 type IProps = {
@@ -38,11 +35,7 @@ export default function OffcanvasArea({openOffCanvas,onHandleOffCanvas,offcanvas
                      </div>
                   </div>
                   <div className="offcanvas-main">
-                     <div className="offcanvas-content">
-                        <h3 className="offcanvas-title">Hello There!</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur <br /> adipiscing elit, </p>
-                     </div>
-                     
+                  
                      {/* mobile menu */}
                      {offcanvas_menu_2 ? <OffcanvasMenuTwo /> : <OffcanvasMenu />}
                      {/* mobile menu */}
@@ -60,37 +53,29 @@ export default function OffcanvasArea({openOffCanvas,onHandleOffCanvas,offcanvas
                            ))}
                         </div>
                      </div>
-                     <div className="offcanvas-contact">
-                        <h3 className="offcanvas-title sm">Information</h3>
-                        <ul>
-                           <li><a href="tel:1245654">+ 4 20 7700 1007</a></li>
-                           <li><a href="mailto:hello@acadia.com">hello@acadia.com</a></li>
-                           <li><a href="#">Avenue de Roma 158b, Lisboa</a></li>
-                        </ul>
-                     </div>
+                   
                      <div className="offcanvas-social">
-                        <h3 className="offcanvas-title sm">Follow Us</h3>
+                        
+                        <h3 className="offcanvas-title sm">Suivez nous</h3>
                         <ul>
                            <li>
                               <a href="#">
                                  <InstagramSvg />
                               </a>
                            </li>
+
                            <li>
                               <a href="#">
-                                 <DribbleSvg />
+                                 <FbSvg />
                               </a>
                            </li>
+
                            <li>
                               <a href="#">
-                                 <BehanceSvg />
+                                 <YoutubeSvg />
                               </a>
                            </li>
-                           <li>
-                              <a href="#">
-                                 <YoutubeTwoSvg />
-                              </a>
-                           </li>
+                          
                         </ul>
                      </div>
                   </div>
