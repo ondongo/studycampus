@@ -22,7 +22,7 @@ export const testimonial_one_data = [
 export const testimonial_two_data = [
   {
     id: 1,
-    name: "Stéphane Mabiala",
+    name: "DAN NGUEKOU",
     position: "Étudiant en Master, Université Marien Ngouabi",
     rating: 5,
     testimonial:
@@ -30,7 +30,7 @@ export const testimonial_two_data = [
   },
   {
     id: 2,
-    name: "Prisca Mouyabi",
+    name: "Prince De Gloire",
     position: "Diplômée en licence, Brazzaville",
     rating: 5,
     testimonial:
@@ -38,7 +38,7 @@ export const testimonial_two_data = [
   },
   {
     id: 3,
-    name: "Josué Tchibambelela",
+    name: "Gentil NKOU",
     position: "Étudiant en mobilité, Pointe-Noire",
     rating: 5,
     testimonial:
@@ -46,7 +46,7 @@ export const testimonial_two_data = [
   },
   {
     id: 4,
-    name: "Nadine Ngoma",
+    name: "Clergé",
     position: "Bachelière, Bac C 2023",
     rating: 5,
     testimonial:
@@ -54,7 +54,7 @@ export const testimonial_two_data = [
   },
   {
     id: 5,
-    name: "Rodolphe Itoua",
+    name: "YOHANE",
     position: "Ingénieur diplômé, Brazzaville",
     rating: 5,
     testimonial:
@@ -62,7 +62,7 @@ export const testimonial_two_data = [
   },
   {
     id: 6,
-    name: "Belinda Louamba",
+    name: "Tieboukoulou",
     position: "Étudiante en préparation de départ",
     rating: 5,
     testimonial:
