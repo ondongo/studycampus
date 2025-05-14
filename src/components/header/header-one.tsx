@@ -40,16 +40,20 @@ export default function HeaderOne() {
                 </div>
               </div>
 
-              <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-10">
+
+          
+              <div className="col-xxl-10 col-xl-10 col-lg-6 col-md-6 col-6">
                 <div className="tp-header-contact d-flex align-items-center justify-content-end">
-                  <div className="main-menu text-end d-none d-md-block">
-                    {/* nav menus start */}
-                    <NavMenus />
-                    {/* nav menus end */}
-                  </div>
+                <div className="col-xxl-4 col-xl-4 d-none d-xl-block">
+                <div className="main-menu text-end">
+                  {/* nav menus start */}
+                  <NavMenus />
+                  {/* nav menus end */}
+                </div>
+              </div>
                   <div className="tp-header-btn d-none d-md-block ml-30">
-                    <Link href="/university-application-form">
-                      Booker un rdv
+                    <Link href="https://calendly.com/gloireondongo1205/prise-de-contact?back=1&month=2025-05">
+                      Booker un rendez vous
                     </Link>
                   </div>
                   <div className="tp-header-bar d-xl-none ml-30">

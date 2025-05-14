@@ -61,7 +61,7 @@ export default function HeroAreaOne() {
                         {item.title}
                       </h2>
                       <div className="tp-hero-btn">
-                        <Link className="tp-btn" href="/university-program">
+                        <Link className="tp-btn" href="/university-application-form">
                           Lancer la procédure
                           <span>
                             <RightArrow />

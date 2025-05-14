@@ -3,17 +3,18 @@ import ApplicationForm from "@/components/form/application-form";
 import BreadcrumbTwo from "@/components/breadcrumb/breadcrumb-two";
 
 export const metadata: Metadata = {
-  title: "University Application Form - Acadia",
+  title: "Demande d'accompagnement - yébaschool",
 };
 
 export default function UniversityApplicationFormPage() {
   return (
     <main>
-            <BreadcrumbTwo
-        title="Schedule a Tour"
-        subtitle="Schedule a Tour"
+      <BreadcrumbTwo
+        title="Demande d'accompagnement (Arrive bientôt)"
+        subtitle="Accompagnement personnalisé"
         admission={true}
       />
+
       {/* application area start */}
       <section className="tp-application-area grey-bg pt-50 pb-50">
         <div className="container">
@@ -24,10 +25,13 @@ export default function UniversityApplicationFormPage() {
                 data-wow-delay=".3s"
               >
                 <p className="tp-application-subtitle">
-                  Ready to find out what sets us apart?
+                  Vous avez besoin d’aide pour constituer votre dossier ? 
                 </p>
-             
+                <h4 className="pt-40">
+                  Remplissez ce formulaire pour bénéficier d’un accompagnement personnalisé.
+                </h4>
               </div>
+
               <div
                 className="tp-application-from-box wow fadeInUp"
                 data-wow-delay=".5s"
@@ -40,7 +44,6 @@ export default function UniversityApplicationFormPage() {
           </div>
         </div>
       </section>
-
       {/* application area end */}
     </main>
   );
