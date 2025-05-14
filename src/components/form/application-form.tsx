@@ -32,7 +32,6 @@ export default function FormulaireApplication() {
     handleSubmit,
     formState: { errors },
     reset,
-    setValue,
   } = useForm<Inputs>();
 
   const [transcriptFiles, setTranscriptFiles] = useState<File[]>([]);
