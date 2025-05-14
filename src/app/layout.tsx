@@ -31,8 +31,9 @@ const crismon_secondary = Crimson_Pro({
 
 
 export const metadata: Metadata = {
-  title: "Acadia - University & Online Course Next js Template",
-  description: "Acadia – template is perfect for a variety of educational needs, including e-Learning, Course Schools, Online Schools, Kindergartens, Classic LMS setups, University Status pages, Instructor Portfolios, Language Academies, Gym Coaching, Online Courses, Single Courses, marketplaces, University Classics, Elegant Homepages, Technology-focused Homepages, and more",
+  title: "Yéba School - Accompagnement Campus France, Bourses et Reconnaissance",
+  description:
+    "Yéba School est une plateforme spécialisée dans l’accompagnement des étudiants pour leurs démarches Campus France, l’obtention de bourses d’études, et la reconnaissance de diplômes. Notre objectif est d’offrir un soutien personnalisé et efficace à chaque étape du parcours académique international.",
 };
 
 export default function RootLayout({
