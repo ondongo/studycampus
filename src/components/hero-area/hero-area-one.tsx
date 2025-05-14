@@ -10,7 +10,7 @@ import { RightArrow } from "../svg";
 const heroSliderData = [
   {
     id: 1,
-    subtitle: "Accompagnement personnalisé pour vos démarches Campus France",
+    subtitle: "Vos démarches Campus France",
     title:
       "Accompagnement pour la constitution de votre dossier Campus France, de la validation du diplôme à la pré-inscription.",
     bgImg: "/assets/img/hero/hero-bg-3.jpg",

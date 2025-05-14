@@ -42,7 +42,7 @@ export default function HeaderOne() {
 
               <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-10">
                 <div className="tp-header-contact d-flex align-items-center justify-content-end">
-                  <div className="main-menu text-end">
+                  <div className="main-menu text-end d-none d-md-block">
                     {/* nav menus start */}
                     <NavMenus />
                     {/* nav menus end */}
