@@ -1,0 +1,60 @@
+$colors: (
+    'common': (
+        'white': #ffffff,
+        'black': #000,
+        'black-1': #010F1C,
+    ),
+    'grey': (
+        '1':#F6F4EE,
+        '2':#84807B,
+        '3':#55585B,
+        '4':#EFEDE7,
+        '5':#636366,
+        '6':#4F5158,
+    ),
+    'red': (
+        '1': #AF0E2E,
+        '2': #C41230,
+        '3': #B70A14,
+    ),
+    'blue': (
+        '1': #F1F3F9,
+    ),
+    'heading': (
+        'primary': #161613,
+        '2': #031F42,
+        '3': #0A1D3A,
+        '4': #161821,
+    ),
+    'text': (
+        'body':#57595F,
+    ),
+    'theme': (
+        'primary': #127C71,
+        'secondary': #FFC121,
+        '3': #FF7162,
+        '4': #127C71,
+        '5': #F0EC51,
+        '6': #1E1E2F,
+        '7': #4661FD,
+        '8': #006B61,
+    ),
+    'dashboard': (
+        'primary': #127C71,
+        'secondary': #FFC121,
+        '3': #5B7D55,
+        'danger' : #127C71,
+        'sucess' : #0F9F55,
+        'warning' : #F59B12,
+        'info' : #5974FF,
+    ),
+    'border': (
+        'primary': #EAEBED,
+        '2': #E4E2DC,
+    )
+);
+
+$white : #fff;
+$black : #000;
+$theme-primary : #AB0C2F;
+$border-primary : #EAEBED;
