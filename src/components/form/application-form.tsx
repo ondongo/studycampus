@@ -277,7 +277,7 @@ export default function FormulaireApplication() {
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                Téléchargez vos bulletins scolaires (jusqu'à 9){" "}
+                Téléchargez vos bulletins scolaires (jusqu&apos;à 9){" "}
               
               </label>
               <input
