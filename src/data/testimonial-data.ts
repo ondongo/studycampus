@@ -10,7 +10,7 @@ export const testimonial_one_data = [
   },
   {
     id: 2,
-    img: "/assets/img/testimonial/test-2-avatar-4.png",
+    img: "/assets/img/testimonial/test-2-avatar-5.png",
     content:
       "“Sollicitudin venenatis risus dolor in dictumst faucibus egestas. Justo at nibh odio lectus malesuada. Enim cras vitae libero nibh tincidunt justo scelerisque. In adipiscing quis eros.”",
     name: "Sakil Khan",

@@ -36,12 +36,12 @@ const testi_slider_opt = {
 
 // nav avatars
 const nav_avatars = [
-  "/assets/img/testimonial/test-2-avatar-3.png",
-  "/assets/img/testimonial/test-2-avatar-1.png",
-  "/assets/img/testimonial/test-2-avatar-2.png",
-  "/assets/img/testimonial/test-2-avatar-3.png",
   "/assets/img/testimonial/test-2-avatar-5.png",
-  "/assets/img/testimonial/test-2-avatar-4.png",
+  "/assets/img/testimonial/test-2-avatar-1.png",
+  "/assets/img/testimonial/test-2-avatar-5.png",
+  "/assets/img/testimonial/test-2-avatar-1.png",
+  "/assets/img/testimonial/test-2-avatar-5.png",
+  "/assets/img/testimonial/test-2-avatar-1.png",
 ];
 
 export default function TestimonialTwo() {
