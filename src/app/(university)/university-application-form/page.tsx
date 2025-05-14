@@ -10,7 +10,7 @@ export default function UniversityApplicationFormPage() {
   return (
     <main>
       <BreadcrumbTwo
-        title="Demande d'accompagnement (Arrive bientôt)"
+        title="(Arrive bientôt)"
         subtitle="Accompagnement personnalisé"
         admission={true}
       />
