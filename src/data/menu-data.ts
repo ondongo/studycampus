@@ -8,7 +8,6 @@ const menu_data: IMenu[] = [
     link: "#",
     dropdown_menus: [
       { id: 1, title: "Comment postuler", link: "/university-apply" },
-      { id: 1, title: "Bourses", link: "/university-apply" },
       { id: 2, title: "Dates et délais", link: "/university-deadlines" },
       { id: 3, title: "Lancer l'accompagnement", link: "/university-application-form" },
     ],

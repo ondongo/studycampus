@@ -889,9 +889,9 @@ div.demo img {
 }
 .tp-btn:hover {
   box-shadow: 0 10px 15px -5px rgba(21, 36, 34, 0.1);
-  color: var(--tp-common-white);
-  background-color: #880824;
-  border-color: #880824;
+  color: var(--tp-theme-primary);
+  background-color: #ffffff;
+  border-color: #ffffff;
 }
 .tp-btn span {
   display: inline-block;
