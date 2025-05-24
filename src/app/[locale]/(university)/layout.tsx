@@ -19,9 +19,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <FooterOne />
       {/* footer area end */}
 
-      {/* back to top */}
-      <BackToTop/>
-      {/* back to top */}
     </MainProvider>
   );
 }

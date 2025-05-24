@@ -29,14 +29,14 @@ export default function HeaderOne() {
                       src={logo}
                       alt="logo"
                       priority
-                      style={{ height: "80px", width: "250px" }}
+                      style={{ height: "60px", width: "220px" }}
                     />
                     <Image
                       className="logo-2"
                       src={logo_black}
                       alt="logo"
                       priority
-                      style={{ height: "80px", width: "250px" }}
+                      style={{ height: "60px", width: "220px" }}
                     />
                   </Link>
                 </div>
