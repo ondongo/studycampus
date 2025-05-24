@@ -4,12 +4,18 @@ import HeroAreaOne from "@/components/hero-area/hero-area-one";
 import ServiceOne from "@/components/service/service-one";
 import AboutOne from "@/components/about/about-one";
 import TestimonialTwo from "@/components/testimonial/testimonial-two";
+import { setRequestLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "yéba school",
 };
 
-export default function HomePage() {
+export default function Home({
+  params: { locale },
+}: {
+  params: { locale: string };
+}) {
+  setRequestLocale(locale);
   return (
     <main>
       {/* hero area start */}
@@ -27,8 +33,6 @@ export default function HomePage() {
       {/* testimonial area start */}
       <TestimonialTwo />
       {/* program area end */}
-
-
 
       {/* cta area start */}
 

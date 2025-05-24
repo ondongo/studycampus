@@ -1,25 +1,47 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import flagFr from "@/assets/img/flag/flag-3.png";
 import flagLingala from "@/assets/img/flag/flag-2.svg";
 import { DownArrow } from "@/components/svg";
 
-type AvailableLanguage = "Français" | "Lingala";
+type AvailableLanguage = "fr" | "ln";
+
+const languageNames: Record<AvailableLanguage, string> = {
+  fr: "Français",
+  ln: "Lingala",
+};
+
+const flags: Record<AvailableLanguage, any> = {
+  fr: flagFr,
+  ln: flagLingala,
+};
 
 export default function HeaderLanguage() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // Récupérer la langue courante dans l'URL, par ex /fr/ ou /ln/
+  const currentLocale = pathname?.split("/")[1] as AvailableLanguage || "fr";
+
   const [openLang, setOpenLang] = React.useState(false);
-  const [selectedLang, setSelectedLang] =
-    React.useState<AvailableLanguage>("Français");
+  const [selectedLang, setSelectedLang] = React.useState<AvailableLanguage>(currentLocale);
 
-  const languages: Record<AvailableLanguage, any> = {
-    Français: flagFr,
-    "Lingala": flagLingala,
-  };
+  const changeLanguage = (lang: AvailableLanguage) => {
+    if (lang === selectedLang) {
+      setOpenLang(false);
+      return;
+    }
 
-  const handleSelectLang = (lang: string) => {
-    if (lang === "Lingala)") return;
-    setSelectedLang(lang as AvailableLanguage);
+    // Conserver les query params
+    const queryString = searchParams ? `?${searchParams.toString()}` : "";
+
+    // Rediriger vers la même page avec la nouvelle langue dans l'URL
+    router.push(`/${lang}${pathname.substring(3)}${queryString}`);
+
+    setSelectedLang(lang);
     setOpenLang(false);
   };
 
@@ -34,8 +56,8 @@ export default function HeaderLanguage() {
         href="#"
       >
         <span>
-          <Image src={languages[selectedLang]} alt="flag-img" />
-          {selectedLang}
+          <Image src={flags[selectedLang]} alt={`${languageNames[selectedLang]} flag`} />
+          {languageNames[selectedLang]}
         </span>
         <span>
           <DownArrow />
@@ -47,7 +69,7 @@ export default function HeaderLanguage() {
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              handleSelectLang("Français");
+              changeLanguage("fr");
             }}
           >
             Français
@@ -58,10 +80,10 @@ export default function HeaderLanguage() {
             href="#"
             onClick={(e) => {
               e.preventDefault();
-              handleSelectLang("Lingala");
+              changeLanguage("ln");
             }}
           >
-            Lingala (indisponible)
+            Lingala
           </a>
         </li>
       </ul>

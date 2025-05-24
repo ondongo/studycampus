@@ -5,26 +5,9 @@ import { EffectFade, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { SwiperOptions } from "swiper/types";
 import { RightArrow } from "../svg";
+import { useTranslations } from 'next-intl';
 
 //
-const heroSliderData = [
-  {
-    id: 1,
-    subtitle: "Vos démarches Campus France",
-    title:
-      "Accompagnement pour la constitution de votre dossier Campus France, de la validation du diplôme à la pré-inscription.",
-    bgImg: "/assets/img/hero/hero-bg-3.jpg",
-  },
-
-  {
-    id: 2,
-    subtitle: "Bourses et aides financières",
-    title:
-      "Nous vous guidons pour trouver des bourses pour financer vos études à l'étranger.",
-    bgImg: "/assets/img/hero/2149156390.jpg",
-  },
-];
-
 const slider_options: SwiperOptions = {
   slidesPerView: 1,
   effect: "fade",
@@ -39,6 +22,23 @@ const slider_options: SwiperOptions = {
 };
 
 export default function HeroAreaOne() {
+  const t = useTranslations('home');
+
+  const heroSliderData = [
+    {
+      id: 1,
+      subtitle: t('campus_france_steps'),
+      title: t('campus_france_desc'),
+      bgImg: "/assets/img/hero/hero-bg-3.jpg",
+    },
+    {
+      id: 2,
+      subtitle: t('scholarships_financial_aid'),
+      title: t('scholarships_desc'),
+      bgImg: "/assets/img/hero/2149156390.jpg",
+    },
+  ];
+
   return (
     <section className="tp-hero-area">
       <Swiper
@@ -62,7 +62,7 @@ export default function HeroAreaOne() {
                       </h2>
                       <div className="tp-hero-btn">
                         <Link className="tp-btn" href="/university-application-form">
-                          Lancer la procédure
+                          {t('start_procedure')}
                           <span>
                             <RightArrow />
                           </span>

@@ -2,6 +2,7 @@
 import Slider from "react-slick";
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import shape_underline from "@/assets/img/unlerline/testimonial-2-svg-1.svg";
 import quate_1 from "@/assets/img/testimonial/testimonial-shape-1.png";
 import quate_2 from "@/assets/img/testimonial/testimonial-shape-3.png";
@@ -36,15 +37,16 @@ const testi_slider_opt = {
 
 // nav avatars
 const nav_avatars = [
-  "/assets/img/testimonial/test-2-avatar-5.png",
-  "/assets/img/testimonial/test-2-avatar-1.png",
-  "/assets/img/testimonial/test-2-avatar-5.png",
-  "/assets/img/testimonial/test-2-avatar-1.png",
-  "/assets/img/testimonial/test-2-avatar-5.png",
+  "/assets/img/testimonial/Mira.png",
+  "/assets/img/testimonial/Dan.png",
+  "/assets/img/testimonial/Yohane.jpeg",
+  "/assets/img/testimonial/Kennedy.png",
+  "/assets/img/testimonial/Screenshot_2025-05-24_at_18.56.21-removebg-preview.png",
   "/assets/img/testimonial/test-2-avatar-1.png",
 ];
 
 export default function TestimonialTwo() {
+  const t = useTranslations("home");
   const [slider1, setSlider1] = useState<Slider | null>(null);
   const [slider2, setSlider2] = useState<Slider | null>(null);
   const sliderRef = useRef<Slider | null>(null);
@@ -63,7 +65,7 @@ export default function TestimonialTwo() {
           <div className="col-xxl-6 col-lg-8">
             <div className="tp-testimonial-section">
               <div className="tp-section text-center mb-40">
-                <h5 className="tp-section-3-subtitle">Témoignages</h5>
+                <h5 className="tp-section-3-subtitle">{t("testimonials")}</h5>
                 <h3 className="tp-section-3-title">
              Ils{" "}    &nbsp;
                   <span>
@@ -125,7 +127,7 @@ export default function TestimonialTwo() {
               }}
               className="tp-testimonial-2-active"
             >
-              {testimonial_two_data.map((item) => (
+              {t.raw("testimonial_two_data").map((item: any) => (
                 <div
                   key={item.id}
                   className="tp-testimonial-2-item text-center"
@@ -136,11 +138,9 @@ export default function TestimonialTwo() {
                     </h4>
                     <span>{item.position}</span>
                     <div className="tp-testimonial-2-avatar-rating">
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
+                      {[...Array(item.rating)].map((_, i) => (
+                        <i key={i} className="fa-solid fa-star"></i>
+                      ))}
                     </div>
                   </div>
                   <div className="tp-testimonial-2-content p-relative">

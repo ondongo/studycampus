@@ -4,6 +4,7 @@ import menu_data from "@/data/menu-data";
 import NavPagesDropdown from "./dropdown/nav-pages-dropdown";
 import NavHomeDropdown from "./dropdown/nav-home-dropdown";
 import NavSmMegaMenus from "./dropdown/nav-sm-mega-menus";
+import { useTranslations } from "next-intl";
 
 // prop type 
 type IProps = {
@@ -11,6 +12,7 @@ type IProps = {
 }
 
 export default function NavMenus({sm_mega_title}: IProps) {
+  const t = useTranslations();
   return (
     <nav className="tp-main-menu-content">
       <ul>
@@ -22,7 +24,7 @@ export default function NavMenus({sm_mega_title}: IProps) {
             }`}
           >
             <Link href={menu.link}>
-              {menu.sm_mega_menus && sm_mega_title ? sm_mega_title : menu.title}
+              {menu.sm_mega_menus && sm_mega_title ? sm_mega_title : t(menu.title)}
             </Link>
 
             {menu.home_dropdown && (
@@ -47,7 +49,7 @@ export default function NavMenus({sm_mega_title}: IProps) {
               <ul className="tp-submenu">
                 {menu.dropdown_menus.map((dm) => (
                   <li key={dm.id}>
-                    <Link href={dm.link}>{dm.title}</Link>
+                    <Link href={dm.link}>{t(dm.title)}</Link>
                   </li>
                 ))}
               </ul>

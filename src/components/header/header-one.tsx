@@ -7,8 +7,10 @@ import HeaderTopArea from "./header-top/header-top-area";
 import logo_black from "@/assets/img/logo/logo-black.png";
 import HeaderStickyWrapper from "./header-sticky-provider/header-sticky-wrapper";
 import OffcanvasButton from "./button/offcanvas-btn";
+import { useTranslations } from "next-intl";
 
 export default function HeaderOne() {
+  const t = useTranslations('home');
   return (
     <>
       <header className="header-area tp-header-transparent p-relative">
@@ -27,14 +29,14 @@ export default function HeaderOne() {
                       src={logo}
                       alt="logo"
                       priority
-                      style={{ height: "80px", width: "180px" }}
+                      style={{ height: "80px", width: "250px" }}
                     />
                     <Image
                       className="logo-2"
                       src={logo_black}
                       alt="logo"
                       priority
-                      style={{ height: "80px", width: "180px" }}
+                      style={{ height: "80px", width: "250px" }}
                     />
                   </Link>
                 </div>
@@ -53,7 +55,7 @@ export default function HeaderOne() {
               </div>
                   <div className="tp-header-btn d-none d-md-block ml-30">
                     <Link href="https://calendly.com/gloireondongo1205/prise-de-contact?back=1&month=2025-05">
-                      Booker un rendez vous
+                    {t('book_appointment')}
                     </Link>
                   </div>
                   <div className="tp-header-bar d-xl-none ml-30">

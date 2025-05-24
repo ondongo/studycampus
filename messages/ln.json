@@ -1,0 +1,141 @@
+{
+  "home": {
+    "admissions": "Admissions",
+    "book_appointment": "Zwa rendez-vous",
+    "follow_us": "Landá biso",
+    "campus_france_steps": "Makambo ya kosala na Campus France",
+    "campus_france_desc": "Tokosunga yo na kosala dossier ya Campus France, banda na diplôme tii na préinscription.",
+    "start_procedure": "Bandá procédure",
+    "scholarships_financial_aid": "Ba bourse mpe lisungi ya mbongo",
+    "scholarships_desc": "Tokoteya yo ndenge ya kozwa bourse mpo na koteya na mboka mosusu.",
+    "support": "Lisungi",
+    "campus_france_support": "Campus France",
+    "campus_france_support_desc": "Tokosala elongo na yo na etape nyonso ya Campus France, banda na compte tii na entretien.",
+    "diploma_recognition": "Kondima diplôme",
+    "diploma_recognition_desc": "Tokosunga yo mpo na kondima diplôme na France.",
+    "registration_help": "Lisungi na inscription",
+    "registration_help_desc": "Tokosunga yo pona kotánga formation mpe kosala dossier ya admission.",
+    "scholarships_financing": "Ba bourse",
+    "scholarships_financing_desc": "Zwá mayele mpo na kosenga bourse to lisungi ya mbongo.",
+    "years_experience": "ans ya expérience",
+    "who_are_we": "Toyo nani?",
+    "about_us_shortone": "Maloba",
+    "about_us_shorttwo": " ya",
+    "about_us_shortthree": " kolakisa biso",
+    "about_us_desc": "Tosungi ba étudiants ya Afrika na projet na bango ya koteya na mboka mosusu. Banda na dossier tii na visa, tozali elongo na bango mpo na kosala suivi ya malamu mpe efficace.",
+    "trust_relationship": "Boyokani ya confiance",
+    "trust_relationship_desc": "Confiance ezali kati na ndenge tozali kosunga yo.",
+    "recommended_by_students": "Ba étudiants basalaka recommandation",
+    "recommended_by_students_desc": "Ba étudiants mingi bazali kosolola malamu mpo na biso.",
+    "start_support": "Bandá lisungi",
+    "testimonials": "Maloba ya batindami",
+    "testimonial_intro": "Tala ndenge bato bazali koloba mpo na biso",
+    "testimonial_two_data": [
+      {
+        "id": 1,
+        "name": "Mira",
+        "position": "Etudiante na Master, Université Marien Ngouabi",
+        "rating": 5,
+        "testimonial": "Na lisungi na bango, nakokaki kosala dossier Campus France. Nazwaki préinscription na France sans problème."
+      },
+      {
+        "id": 2,
+        "name": "Clergé",
+        "position": "Bachelière, Bac C 2023",
+        "rating": 5,
+        "testimonial": "Lisungi na bango mpo na bourse ezalaki ya malamu. Nazwaki aide financière oyo esengelaki mpo na ngai."
+      },
+      {
+        "id": 3,
+        "name": "Yohan NKOU",
+        "position": "Etudiant na mobilité, Pointe-Noire",
+        "rating": 4,
+        "testimonial": "Basalisaki ngai na ndenge ya kosala makambo ya Campus France. Makambo esalemaki na kimia mpe mbangu."
+      },
+      {
+        "id": 4,
+        "name": "Kennedy",
+        "position": "Ingénieur diplômé, Brazzaville",
+        "rating": 4,
+        "testimonial": "Nazalaki na mposa ya kondima diplôme na ngai na France. Mayele na bango esalisaki ngai mingi mpo na kosala dossier ya malamu. Service ezalaki ya mbangu mpe ya malamu."
+      },
+      {
+        "id": 5,
+        "name": "Tieboukoulou Frank",
+        "position": "Etudiante na préparation ya kokende",
+        "rating": 5,
+        "testimonial": "Basalisaki ngai na makambo nyonso: inscription, visa, logement. Lisungi na bango ezalaki ya malamu mingi, nalingi koloba 100%!"
+      },
+      {
+        "id": 6,
+        "name": "Boursier",
+        "position": "Etudiante na Master, Université Marien Ngouabi",
+        "rating": 5,
+        "testimonial": "Na lisungi na bango, nakokaki kosala dossier Campus France. Nazwaki préinscription na France sans problème."
+      }
+    ]
+  },
+  "menu": {
+    "admissions": "Kokɔta",
+    "how_to_apply": "Ndenge ya kosenga",
+    "dates_deadlines": "Mokolo mpe suka ya kosenga",
+    "start_support": "Kobanda lisungi"
+  },
+  "university_application_form": {
+    "page_title": "Formulaire ya candidature universitaire",
+    "instructions": "Salisá formulaire na ba informations ya yo ya moto mpe ya école mpo opostuler.",
+    "required_fields": "Ba champs oyo ezali na * esengeli kotondisama.",
+    "submit_button": "Tinda candidature",
+    "success_message": "Candidature na yo esalemaki na bomoko!",
+    "error_message": "Esalemaki problème na tinda. Tuná lisusu ba informations na yo.",
+    "contact_help": "Ozali na souci? Kontaktá biso."
+  },
+
+  "university_deadlines": {
+    "page_title": "Mokolo ya nsuka ya candidature",
+    "intro": "Talá ba dates ya nsuka ya kosala candidature mpe inscription.",
+    "deadlines_list": [
+      {
+        "event": "Mokolo ya nsuka ya kotindela candidature",
+        "date": "30 juin 2025"
+      },
+      {
+        "event": "Kobimisa ba résultats ya admission",
+        "date": "15 juillet 2025"
+      },
+      {
+        "event": "Mokolo ya nsuka ya inscription",
+        "date": "1er août 2025"
+      },
+      {
+        "event": "Kobanda ba cours",
+        "date": "15 septembre 2025"
+      }
+    ],
+    "note": "Salá makasi mpo otika te ba dates wana, soki te okoki kozwa retard."
+  },
+
+  "faq": {
+    "page_title": "Mituna oyo bazalaka kotuna mingi",
+    "intro": "Ozali na motuna? Talá ba eyano ya mituna oyo basalaka mingi.",
+    "faq_items": [
+      {
+        "question": "Ndenge nini nakoki kosala candidature?",
+        "answer": "Salisá formulaire na site na page ya candidature."
+      },
+      {
+        "question": "Naboyi koyeba ba documents nini esengeli?",
+        "answer": "Diplôme, relevé ya notes, carte d’identité, mpe lettre de motivation."
+      },
+      {
+        "question": "Ndenge nini nakoki koyeba soki nazwaki admission?",
+        "answer": "Résultats ekozala na site na biso na mokolo oyo ezali na page ya Dates limites."
+      },
+      {
+        "question": "Nakoki kosenga bourse?",
+        "answer": "Ee, tozali na équipe oyo ekosunga yo mpo na bourse."
+      }
+    ],
+    "contact_support": "Soki oyebi lisusu te, contactá biso mpo na lisungi."
+  }
+}

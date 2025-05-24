@@ -1,0 +1,144 @@
+{
+  "home": {
+    "admissions": "Admissions",
+    "book_appointment": "Prendre rendez-vous",
+    "follow_us": "Suivez-nous",
+    "campus_france_steps": "Étapes Campus France",
+    "campus_france_desc": "On vous accompagne pour préparer votre dossier Campus France, de la validation du diplôme jusqu’à la pré-inscription.",
+    "start_procedure": "Lancer la procédure",
+    "scholarships_financial_aid": "Bourses et aides financières",
+    "scholarships_desc": "On vous guide pour trouver des bourses pour financer vos études à l'étranger.",
+    "support": "Accompagnement",
+    "campus_france_support": "Accompagnement Campus France",
+    "campus_france_support_desc": "On vous aide à chaque étape de Campus France, du compte à l’entretien.",
+    "diploma_recognition": "Reconnaissance de diplôme",
+    "diploma_recognition_desc": "On vous aide à faire reconnaître votre diplôme en France.",
+    "registration_help": "Aide aux inscriptions",
+    "registration_help_desc": "On vous assiste dans la recherche de formation et la constitution de dossier d’admission.",
+    "scholarships_financing": "Bourses & financements",
+    "scholarships_financing_desc": "Profitez de notre expertise pour candidater à des bourses ou aides financières.",
+    "years_experience": "ans d'expérience",
+    "who_are_we": "Qui sommes-nous ?",
+    "about_us_shortone": "Quelques mots",
+    "about_us_shorttwo": "sur notre",
+    "about_us_shortthree": " accompagnement",
+    "about_us_desc": "Nous accompagnons les étudiants africains dans leurs projets d’études à l’étranger. De la constitution du dossier jusqu’à l’obtention du visa, nous sommes présents à chaque étape pour un suivi personnalisé et efficace.",
+    "trust_relationship": "Une relation de confiance",
+    "trust_relationship_desc": "La confiance est au cœur de notre accompagnement.",
+    "recommended_by_students": "Recommandé par les étudiants",
+    "recommended_by_students_desc": "Ils sont nombreux à nous faire confiance et à nous recommander.",
+    "start_support": "Lancer l'accompagnement",
+    "testimonials": "Témoignages",
+    "testimonial_intro": "Ils parlent de nous",
+    "testimonial_two_data": [
+      {
+        "id": 1,
+        "name": "Mira",
+        "position": "Étudiante en Master, Université Marien Ngouabi",
+        "rating": 5,
+        "testimonial": "Grâce à leur accompagnement, j'ai pu préparer mon dossier Campus France sans stress et obtenir ma préinscription en France."
+      },
+      {
+        "id": 2,
+        "name": "Clergé",
+        "position": "Bachelière, Bac C 2023",
+        "rating": 5,
+        "testimonial": "Leur aide pour les demandes de bourses a été précieuse, j'ai trouvé une aide financière adaptée."
+      },
+      {
+        "id": 3,
+        "name": "Yohan NKOU",
+        "position": "Étudiant en mobilité, Pointe-Noire",
+        "rating": 5,
+        "testimonial": "Ils m'ont bien expliqué les démarches Campus France, tout s'est passé plus vite que prévu."
+      },
+      {
+        "id": 4,
+        "name": "Kennedy",
+        "position": "Ingénieur diplômé, Brazzaville",
+        "rating": 4,
+        "testimonial": "J’avais besoin de faire reconnaître mon diplôme en France. Leur expertise m’a beaucoup aidé à monter un dossier solide. Service rapide et efficace."
+      },
+      {
+        "id": 5,
+        "name": "Tieboukoulou Frank",
+        "position": "Étudiante en préparation de départ",
+        "rating": 5,
+        "testimonial": "Ils m’ont aidée dans toutes mes démarches : inscription, visa, logement. Un accompagnement complet et rassurant, je recommande à 100% !"
+      }
+,
+      {
+        "id": 6,
+        "name": "Fred",
+        "position": "Boursier",
+        "rating": 5,
+        "testimonial": "Grâce à leur accompagnement, j'ai pu préparer mon dossier Campus France sans stress et obtenir ma préinscription en France."
+      }
+    ]
+  },
+
+  "menu": {
+    "admissions": "Admissions",
+    "how_to_apply": "Comment postuler",
+    "dates_deadlines": "Dates et délais",
+    "start_support": "Lancer l'accompagnement"
+  },
+
+  "university_application_form": {
+    "page_title": "Formulaire de candidature universitaire",
+    "instructions": "Remplissez le formulaire avec vos informations personnelles et académiques pour postuler.",
+    "required_fields": "Tous les champs marqués d'un * sont obligatoires.",
+    "submit_button": "Envoyer la candidature",
+    "success_message": "Votre candidature a été envoyée avec succès !",
+    "error_message": "Erreur lors de l'envoi. Veuillez vérifier les informations et réessayer.",
+    "contact_help": "Besoin d’aide ? Contactez notre support."
+  },
+
+  "university_deadlines": {
+    "page_title": "Dates limites universitaires",
+    "intro": "Voici les principales dates à respecter pour vos candidatures et inscriptions.",
+    "deadlines_list": [
+      {
+        "event": "Date limite de dépôt des candidatures",
+        "date": "30 juin 2025"
+      },
+      {
+        "event": "Annonce des résultats d’admission",
+        "date": "15 juillet 2025"
+      },
+      {
+        "event": "Date limite d’inscription",
+        "date": "1er août 2025"
+      },
+      {
+        "event": "Début des cours",
+        "date": "15 septembre 2025"
+      }
+    ],
+    "note": "Respectez bien ces dates pour éviter tout problème."
+  },
+
+  "faq": {
+    "page_title": "Foire aux questions",
+    "intro": "Vous avez des questions ? Voici les réponses aux questions les plus fréquentes.",
+    "faq_items": [
+      {
+        "question": "Comment faire ma candidature ?",
+        "answer": "Remplissez le formulaire en ligne sur la page 'Formulaire de candidature'."
+      },
+      {
+        "question": "Quels documents dois-je fournir ?",
+        "answer": "Votre diplôme, relevés de notes, pièce d’identité, et lettre de motivation."
+      },
+      {
+        "question": "Comment savoir si je suis admis ?",
+        "answer": "Les résultats sont publiés sur notre site à la date indiquée dans la page 'Dates limites'."
+      },
+      {
+        "question": "Puis-je demander une bourse ?",
+        "answer": "Oui, nous proposons un accompagnement pour les demandes de bourses."
+      }
+    ],
+    "contact_support": "Si vous ne trouvez pas la réponse, contactez notre support."
+  }
+}

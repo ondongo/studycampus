@@ -1,6 +1,8 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
-import { RightArrowTwo,  } from "../svg";
+import { RightArrowTwo } from "../svg";
+import { useTranslations } from 'next-intl';
 
 // icons
 import ser_icon_1 from "@/assets/img/icon/service/service-icon-1.svg";
@@ -9,40 +11,40 @@ import ser_icon_3 from "@/assets/img/icon/service/service-icon-3.svg";
 import ser_icon_4 from "@/assets/img/icon/service/service-icon-4.svg";
 import ser_shape from '@/assets/img/shape/service/services-shape-1.png';
 
-// service data
-const service_data = [
-  {
-    id: 1,
-    icon: ser_icon_1,
-    title: "Accompagnement <br/> Campus France",
-    text: "Nous vous guidons à chaque étape de la procédure Campus France, du compte à l’entretien pédagogique.",
-  },
-  {
-    id: 2,
-    icon: ser_icon_2,
-    title: "Reconnaissance <br/> de diplôme",
-    text: "Obtenez de l'aide pour faire reconnaître votre diplôme auprès des établissements français.",
-  },
-  {
-    id: 3,
-    icon: ser_icon_3,
-    title: "Aide aux <br/> inscriptions",
-    text: "Nous vous assistons dans la recherche de formations et la constitution des dossiers d'admission.",
-  },
-  {
-    id: 4,
-    icon: ser_icon_4,
-    title: "Bourses <br/> & financements",
-    text: "Profitez de notre expertise pour candidater à des bourses d’études ou trouver des aides financières.",
-  },
-];
-
-
 export default function ServiceOne() {
+  const t = useTranslations('home');
+
+  const service_data = [
+    {
+      id: 1,
+      icon: ser_icon_1,
+      title: t('campus_france_support'),
+      text: t('campus_france_support_desc'),
+    },
+    {
+      id: 2,
+      icon: ser_icon_2,
+      title: t('diploma_recognition'),
+      text: t('diploma_recognition_desc'),
+    },
+    {
+      id: 3,
+      icon: ser_icon_3,
+      title: t('registration_help'),
+      text: t('registration_help_desc'),
+    },
+    {
+      id: 4,
+      icon: ser_icon_4,
+      title: t('scholarships_financing'),
+      text: t('scholarships_financing_desc'),
+    },
+  ];
+
   return (
     <section
       className="service-area tp-service-bg"
-      style={{ backgroundImage: `url(/assets/img/bg/design-services.png)` }}
+      style={{ backgroundImage: `url(/assets/img/bg/serv.png)` }}
     >
       <div className="container">
         <div className="row">
@@ -59,10 +61,9 @@ export default function ServiceOne() {
                     </span>
                   </div>
                   <h4 className="tp-service-title">
-                    <Link
-                      href="/university-about"
-                      dangerouslySetInnerHTML={{ __html: item.title }}
-                    ></Link>
+                    <Link href="/university-about">
+                      {item.title}
+                    </Link>
                   </h4>
                   <div className="tp-service-btn">
                     <Link href="/university-about">
@@ -79,7 +80,6 @@ export default function ServiceOne() {
             </div>
           ))}
         </div>
-    
       </div>
       <div className="tp-service-shape">
         <div

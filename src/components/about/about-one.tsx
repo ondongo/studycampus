@@ -1,5 +1,7 @@
+"use client";
 import Image from "next/image";
 import { RightArrow, ShapeLine } from "../svg";
+import { useTranslations } from "next-intl";
 
 // images
 import thumb_1 from "@/assets/img/about/about.png";
@@ -12,29 +14,28 @@ import { CSSProperties } from "react";
 import CounterItem from "../counter/counter-item";
 import Link from "next/link";
 
-// list data
-const about_lists = [
-  {
-    id: 1,
-    icon: icon_1,
-    title: "Une relation de confiance",
-    subtitle:
-      "Nous plaçons la confiance <br/> au cœur de notre accompagnement.",
-  },
-  {
-    id: 2,
-    icon: icon_2,
-    title: "Recommandé par les étudiants",
-    subtitle:
-      "Ils sont nombreux à nous faire confiance <br/> et à nous recommander.",
-  },
-];
-
-const imgStyle: CSSProperties = {
-  height: "auto",
-};
-
 export default function AboutOne() {
+  const t = useTranslations("home");
+
+  const about_lists = [
+    {
+      id: 1,
+      icon: icon_1,
+      title: t("trust_relationship"),
+      subtitle: t("trust_relationship_desc"),
+    },
+    {
+      id: 2,
+      icon: icon_2,
+      title: t("recommended_by_students"),
+      subtitle: t("recommended_by_students_desc"),
+    },
+  ];
+
+  const imgStyle: CSSProperties = {
+    height: "auto",
+  };
+
   return (
     <section className="about-area tp-about-bg grey-bg pt-105">
       <div className="container">
@@ -65,10 +66,7 @@ export default function AboutOne() {
                   <h3 className="tp-about-exprience-count">
                     <CounterItem min={0} max={3} />
                   </h3>
-                  <p>
-                    {" "}
-                    ans <br /> d&apos;experience
-                  </p>
+                  <p>{t("years_experience")}</p>
                 </div>
               </div>
             </div>
@@ -79,26 +77,15 @@ export default function AboutOne() {
               data-wow-delay=".3s"
             >
               <div className="tp-section mb-40">
-                <h5 className="tp-section-subtitle">Qui sommes-nous ?</h5>
+                <h5 className="tp-section-subtitle">{t("who_are_we")}</h5>
                 <h3 className="tp-section-title mb-30">
-                  {" "}
-                  Quelques mots <br /> sur notre
+                  {t("about_us_shortone")} <br /> {t("about_us_shorttwo")}
                   <span>
                     {" "}
-                    &nbsp; accompagnement <ShapeLine />{" "}
+                    &nbsp;{t("about_us_shortthree")} <ShapeLine />{" "}
                   </span>
                 </h3>
-                <p>
-                  {" "}
-                  Nous accompagnons les étudiants africains dans leurs projets
-                  d’études à l’étranger. <br />
-                  De la constitution du dossier jusqu’à l’obtention du visa,
-                  nous sommes présents à chaque étape <br />
-                  pour offrir un suivi personnalisé, rassurant et efficace.{" "}
-                  <br />
-                  Avec plusieurs années d’expérience, nous faisons de votre
-                  réussite notre priorité.
-                </p>
+                <p>{t("about_us_desc")}</p>
               </div>
               <div className="tp-about-list">
                 {about_lists.map((list) => (
@@ -113,15 +100,13 @@ export default function AboutOne() {
                     </div>
                     <div className="tp-about-list-content">
                       <h5 className="tp-about-list-title">{list.title}</h5>
-                      <p
-                        dangerouslySetInnerHTML={{ __html: list.subtitle }}
-                      ></p>
+                      <p>{list.subtitle}</p>
                     </div>
                   </div>
                 ))}
                 <div className="tp-about-btn pt-10">
                   <Link className="tp-btn tp-btn-sm" href="/university-apply">
-                    Lancer l&apos;accompagnement
+                    {t("start_support")}
                     <span>
                       <RightArrow />
                     </span>

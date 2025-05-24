@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { useTranslations } from 'next-intl';
 import ApplicationForm from "@/components/form/application-form";
 import BreadcrumbTwo from "@/components/breadcrumb/breadcrumb-two";
 
@@ -7,11 +8,13 @@ export const metadata: Metadata = {
 };
 
 export default function UniversityApplicationFormPage() {
+  const t = useTranslations('university_application_form');
+
   return (
     <main>
       <BreadcrumbTwo
-        title="(Arrive bientôt)"
-        subtitle="Accompagnement personnalisé"
+        title={t('page_title')}
+        subtitle={t('instructions')}
         admission={true}
       />
 
@@ -25,10 +28,10 @@ export default function UniversityApplicationFormPage() {
                 data-wow-delay=".3s"
               >
                 <p className="tp-application-subtitle">
-                  Vous avez besoin d’aide pour constituer votre dossier ? 
+                  {t('required_fields')}
                 </p>
                 <h4 className="pt-40">
-                  Remplissez ce formulaire pour bénéficier d’un accompagnement personnalisé.
+                  {t('instructions')}
                 </h4>
               </div>
 

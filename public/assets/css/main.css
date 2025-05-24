@@ -107,7 +107,7 @@ li,
   --tp-heading-3: #0A1D3A;
   --tp-heading-4: #161821;
   --tp-text-body: #57595F;
-  --tp-theme-primary: #127C71;
+  --tp-theme-primary: #2B4E57;
   --tp-theme-secondary: #FFC121;
   --tp-theme-3: #FF7162;
   --tp-theme-4: #B1040E;
@@ -6759,17 +6759,17 @@ body .ui-tooltip {
   background-color: var(--tp-theme-primary);
 }
 .tp-header-1.tp-header-sticky .tp-header-btn a:hover {
-  color: var(--tp-common-white);
-  background-color: #880824;
-  border-color: #880824;
+  color: var(--tp-theme-primary);
+  background-color: #ffffff;
+  border-color: #ffffff;
   box-shadow: 0 10px 15px -5px rgba(21, 36, 34, 0.1);
 }
 .tp-header-1.tp-header-sticky .offcanvas-open-btn {
   background-color: var(--tp-theme-primary);
 }
 .tp-header-1.tp-header-sticky .offcanvas-open-btn:hover {
-  background-color: #880824;
-  border-color: #880824;
+  background-color: #ffffff;
+  border-color: #ffffff;
   box-shadow: 0 10px 15px -5px rgba(21, 36, 34, 0.1);
 }
 .tp-header-1.tp-header-sticky .offcanvas-open-btn:hover i {
