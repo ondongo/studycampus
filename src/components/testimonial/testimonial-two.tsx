@@ -66,10 +66,11 @@ export default function TestimonialTwo() {
             <div className="tp-testimonial-section">
               <div className="tp-section text-center mb-40">
                 <h5 className="tp-section-3-subtitle">{t("testimonials")}</h5>
+
                 <h3 className="tp-section-3-title">
-             Ils{" "}    &nbsp;
+                  {t("intro_part1")} &nbsp;
                   <span>
-                    témoignent &nbsp;
+                    {t("intro_highlight")}&nbsp;
                     <Image
                       className="tp-underline-shape-8 wow bounceIn"
                       data-wow-duration="1.5s"
@@ -77,8 +78,8 @@ export default function TestimonialTwo() {
                       src={shape_underline}
                       alt="shape-underline"
                     />
-                  </span>
-                  sur notre accompagnement
+                  </span>{" "}
+                  {t("intro_part2")}
                 </h3>
               </div>
             </div>

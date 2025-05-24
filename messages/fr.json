@@ -29,7 +29,9 @@
     "recommended_by_students_desc": "Ils sont nombreux à nous faire confiance et à nous recommander.",
     "start_support": "Lancer l'accompagnement",
     "testimonials": "Témoignages",
-    "testimonial_intro": "Ils parlent de nous",
+    "intro_part1": "Ils",
+    "intro_highlight": "témoignent",
+    "intro_part2": "sur notre accompagnement",
     "testimonial_two_data": [
       {
         "id": 1,

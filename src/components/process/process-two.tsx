@@ -33,7 +33,7 @@ export default function ProcessTwo() {
           <div className="col-lg-8">
             <div id="down" className="tp-apply-process-wrapper">
               <h3 className="tp-apply-process-title">
-                Le process sur YebaSchool
+                Le process sur BlessingsTravels
               </h3>
 
               {applicationProcess.map((step, index) => (

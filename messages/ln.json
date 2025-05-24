@@ -29,7 +29,9 @@
     "recommended_by_students_desc": "Ba étudiants mingi bazali kosolola malamu mpo na biso.",
     "start_support": "Bandá lisungi",
     "testimonials": "Maloba ya batindami",
-    "testimonial_intro": "Tala ndenge bato bazali koloba mpo na biso",
+    "intro_part1": "Ba",
+    "intro_highlight": "sango",
+    "intro_part2": "na lisungi na biso",
     "testimonial_two_data": [
       {
         "id": 1,
