@@ -4,7 +4,7 @@
     "book_appointment": "Prendre rendez-vous",
     "follow_us": "Suivez-nous",
     "campus_france_steps": "Étapes Campus France",
-    "campus_france_desc": "On vous accompagne pour préparer votre dossier Campus France, de la validation du diplôme jusqu’à la pré-inscription.",
+    "campus_france_desc": "On vous accompagne pour préparer votre dossier Campus France.",
     "start_procedure": "Lancer la procédure",
     "scholarships_financial_aid": "Bourses et aides financières",
     "scholarships_desc": "On vous guide pour trouver des bourses pour financer vos études à l'étranger.",
@@ -87,8 +87,8 @@
   },
 
   "university_application_form": {
-    "page_title": "Formulaire de candidature universitaire",
-    "instructions": "Remplissez le formulaire avec vos informations personnelles et académiques pour postuler.",
+    "page_title": "Formulaire",
+    "instructions": "Remplissez le formulaire avec vos informations",
     "required_fields": "Tous les champs marqués d'un * sont obligatoires.",
     "submit_button": "Envoyer la candidature",
     "success_message": "Votre candidature a été envoyée avec succès !",
@@ -97,8 +97,8 @@
   },
 
   "university_deadlines": {
-    "page_title": "Dates limites universitaires",
-    "intro": "Voici les principales dates à respecter pour vos candidatures et inscriptions.",
+    "page_title": "Dates limites",
+    "intro": "Voici les principales dates à respecter",
     "deadlines_list": [
       {
         "event": "Date limite de dépôt des candidatures",
@@ -122,7 +122,7 @@
 
   "faq": {
     "page_title": "Foire aux questions",
-    "intro": "Vous avez des questions ? Voici les réponses aux questions les plus fréquentes.",
+    "intro": "Vous avez des questions ?",
     "faq_items": [
       {
         "question": "Comment faire ma candidature ?",

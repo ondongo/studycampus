@@ -58,7 +58,7 @@ export default async function LocaleLayout({
             rel="noopener noreferrer"
             aria-label="Contactez-nous sur WhatsApp"
           >
-            <FaWhatsapp size={24} />
+            <FaWhatsapp size={20} />
           </a>
         </NextIntlClientProvider>
       </body>
