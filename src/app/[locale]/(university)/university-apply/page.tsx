@@ -5,7 +5,7 @@ import ProcessTwo from "@/components/process/process-two";
 import ApplyRequirement from "@/components/requirement/apply-requirement-area";
 
 export const metadata: Metadata = {
-  title: "Yéba school",
+  title: "Blessings Travels",
 };
 
 export default function UniversityApplyPage() {

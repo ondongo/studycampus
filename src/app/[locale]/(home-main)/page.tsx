@@ -7,7 +7,7 @@ import TestimonialTwo from "@/components/testimonial/testimonial-two";
 import { setRequestLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
-  title: "yéba school",
+  title: "Blessings Travels",
 };
 
 export default function Home({
