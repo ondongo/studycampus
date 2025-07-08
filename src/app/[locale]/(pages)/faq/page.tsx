@@ -4,7 +4,7 @@ import BreadcrumbTwo from "@/components/breadcrumb/breadcrumb-two";
 
 
 export const metadata: Metadata = {
-    title: "FAQ -  Yéba schoo",
+    title: "FAQ -  Blessings Travels",
 };
 
 export default function FaqPage() {

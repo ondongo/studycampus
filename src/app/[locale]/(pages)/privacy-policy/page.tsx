@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-  title: "Privacy Policy -  Yéba schoo",
+  title: "Privacy Policy -  Blessings Travels",
 };
 
 export default function PrivacyPolicyPage() {
