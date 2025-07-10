@@ -21,10 +21,10 @@ datasource db {
 }
 
 model Etudiant {
-  id              String   @id @default(cuid())
+  id              String      @id @default(cuid())
   fname           String
   lname           String
-  email           String   @unique
+  email           String      @unique
   codeCountry     String
   phone           String
   school          String
@@ -33,17 +33,65 @@ model Etudiant {
   additionalInfo  String?
   birthDate       DateTime
   zipUrl          String
-  createdAt       DateTime @default(now())
+  profilePicture  String?     
+  createdAt       DateTime    @default(now())
   typeStudent     TypeStudent
-  isSeen          Boolean  @default(false)             // Dossier vu ? | File viewed?
-  isContacted     Boolean  @default(false)             // Étudiant contacté ? | Student contacted?
+  isSeen          Boolean     @default(false)
+  isContacted     Boolean     @default(false)
+  source          Source
+
+  @@map("etudiants")
 }
+
 
 enum TypeStudent {
   NOUVEAU_BACHELIER         
   PAS_ENCORE_BACHELIER       
   LICENCE                  
   DIPLOME_SUPERIEUR          // A un diplôme d'études supérieures
+}
+
+enum Source {
+  BOURSE
+  CAMPUS_FRANCE
+}
+
+
+model Evenement {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  dateDebut   DateTime
+  dateFin     DateTime
+  etat        Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+
+  @@map("evenements")
+}
+
+model QuestionReponse {
+  id          String      @id @default(cuid())
+  title       String
+  description String
+  type        QAType
+  createdAt   DateTime    @default(now())
+
+  @@map("questions_reponses")
+}
+
+enum QAType {
+  PARENT
+  ETUDIANT
+}
+
+model Annonce {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  etat        Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@map("annonces")
 }
 
 
