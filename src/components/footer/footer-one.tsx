@@ -14,7 +14,7 @@ export default function FooterOne({ style_2 = false }: IProps) {
             <div className="col-lg-12">
               <div className="tp-footer-copyright text-center">
                 <span>
-                  © {new Date().getFullYear()} <a href="#">YébaSchool</a>. Tous
+                  © {new Date().getFullYear()} <a href="#">BlessingTravel</a>. Tous
                   droits reservés.
                 </span>
               </div>
