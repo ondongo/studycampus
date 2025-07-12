@@ -64,6 +64,7 @@ model Evenement {
   dateDebut   DateTime
   dateFin     DateTime
   etat        Boolean   @default(true)
+  zipUrl      String?
   createdAt   DateTime  @default(now())
 
   @@map("evenements")
@@ -89,6 +90,7 @@ model Annonce {
   title       String
   description String
   etat        Boolean  @default(true)
+  zipUrl      String?
   createdAt   DateTime @default(now())
 
   @@map("annonces")

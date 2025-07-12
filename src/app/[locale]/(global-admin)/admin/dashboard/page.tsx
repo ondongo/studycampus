@@ -8,12 +8,12 @@ export const metadata:Metadata = {
 
 export default function InstructorDashboardPage() {
   return (
-    <main className="tp-dashboard-body-bg">
+    <>
   
         {/* dashboard content area start */}
         <DashboardArea/>
         {/* dashboard content area end */}
 
-    </main>
+    </>
   )
 }

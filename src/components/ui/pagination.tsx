@@ -1,18 +1,19 @@
+import React from "react";
 import ReactPaginate from "react-paginate";
-import { NextArrowThree, PrevArrowThree } from "../svg";
+import { NextArrowThree, PrevArrowThree } from "@/components/svg";
 
-// prop type
-type IProps = {
-  pageCount: number;
+interface IProps {
   handlePageClick: (event: { selected: number }) => void;
+  pageCount: number;
   isCenter?: boolean;
-};
+  currentPage?: number;
+}
 
-export default function Pagination({ handlePageClick, pageCount,isCenter}: IProps) {
+export default function Pagination({ handlePageClick, pageCount, isCenter, currentPage }: IProps) {
   return (
     <nav>
       <ReactPaginate
-        className={isCenter?'justify-content-center':''}
+        className={isCenter ? 'justify-content-center' : ''}
         breakLabel="..."
         activeClassName="current"
         nextLabel={<NextArrowThree />}
@@ -21,6 +22,7 @@ export default function Pagination({ handlePageClick, pageCount,isCenter}: IProp
         pageCount={pageCount}
         previousLabel={<PrevArrowThree />}
         renderOnZeroPageCount={null}
+        forcePage={currentPage ? currentPage - 1 : undefined}
       />
     </nav>
   );

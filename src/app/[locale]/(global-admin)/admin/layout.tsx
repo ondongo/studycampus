@@ -1,9 +1,6 @@
-import BackToTop from "@/components/back-to-top";
 import DashboardBanner from "@/components/dashboard/dashboard-banner";
 import DashboardContentWrapper from "@/components/dashboard/dashboard-content-wrapper";
 import FooterOne from "@/components/footer/footer-one";
-import HeaderOne from "@/components/header/header-one";
-import HeaderTwo from "@/components/header/header-two";
 import MainProvider from "@/components/provider/main-provider";
 
 export default function Layout({ children }: { children: React.ReactNode }) {

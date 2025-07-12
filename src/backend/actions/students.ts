@@ -1,13 +1,26 @@
-import { Etudiant, TypeStudent } from "@/types/student";
-import { StudentController } from "../controllers/StudentController";
+"use server";
 
+import { Etudiant, TypeStudent, Source } from "@/types/student";
+import { StudentController } from "../controllers/StudentController";
 import { Etudiant as PrismaStudent } from "@prisma/client";
+
 
 export async function deleteStudent(studentId: string): Promise<void> {
   await StudentController.deleteStudent(studentId);
 }
 export async function createStudent(studentData: PrismaStudent): Promise<void> {
   await StudentController.createStudent(studentData);
+}
+
+// Submit
+
+
+export async function markStudentAsSeen(studentId: string): Promise<void> {
+  await StudentController.markStudentAsSeen(studentId);
+}
+
+export async function markStudentAsContacted(studentId: string): Promise<void> {
+  await StudentController.markStudentAsContacted(studentId);
 }
 
 export async function getStudentById(id: string): Promise<Etudiant | null> {
@@ -34,6 +47,7 @@ export async function getStudentById(id: string): Promise<Etudiant | null> {
     zipUrl: Student.zipUrl,
     createdAt: new Date(Student.createdAt),
     typeStudent: Student.typeStudent as TypeStudent,
+    source: Student.source as Source,
     isSeen: Student.isSeen,
     isContacted: Student.isContacted,
   };
@@ -57,6 +71,7 @@ export async function getAllStudents(page: number, pageSize: number) {
     zipUrl: Student.zipUrl,
     createdAt: new Date(Student.createdAt),
     typeStudent: Student.typeStudent as TypeStudent,
+    source: Student.source as Source,
     isSeen: Student.isSeen,
     isContacted: Student.isContacted,
   }));
@@ -69,18 +84,12 @@ export async function getAllStudents(page: number, pageSize: number) {
 
 export async function getFilteredStudents(
   filters: {
-    availability?: boolean;
-    brand?: string;
-    minPrice?: number;
-    maxPrice?: number;
-    location?: string;
-    category?: string;
-    minRating?: number;
     searchQuery?: string;
+    typeStudent?: string;
+    isSeen?: boolean;
+    isContacted?: boolean;
     startDate?: Date;
     endDate?: Date;
-    saleStatus?: "RENT" | "SALE";
-    condition?: string;
   },
   pagination: {
     page?: number;
@@ -107,6 +116,7 @@ export async function getFilteredStudents(
       zipUrl: Student.zipUrl,
       createdAt: new Date(Student.createdAt),
       typeStudent: Student.typeStudent as TypeStudent,
+      source: Student.source as Source,
       isSeen: Student.isSeen,
       isContacted: Student.isContacted,
     }));
@@ -117,9 +127,13 @@ export async function getFilteredStudents(
     };
   } catch (error) {
     console.error(
-      "Erreur lors de la récupération des véhicules filtrés :",
+      "Erreur lors de la récupération des étudiants filtrés :",
       error
     );
-    return [];
+    return {
+      Students: [],
+      totalPages: 1,
+      totalItems: 0,
+    };
   }
 }

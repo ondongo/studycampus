@@ -1,10 +1,9 @@
 'use client';
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { DashboardSvg } from "@/components/svg";
-import { AnalyticSvg, AnnouncementSvg, AssignmentSvg, BundleSvg, CalenderSvg, CertificateSvg, CourseSvg, EnrolledCourseSvg, LogoutSvg, OrderHistorySvg, ProfileSvg, QuestionAnswerSvg, QuizAttemptsSvg, QuizAttemptsTwoSvg, ReviewSvg, SettingSvg, WishlistSvg, WithdrawalSvg } from "@/components/svg/dashboard-icons";
+import {  AnnouncementSvg, AssignmentSvg, BundleSvg, CalenderSvg, CertificateSvg, CourseSvg, EnrolledCourseSvg, LogoutSvg, OrderHistorySvg, ProfileSvg, QuestionAnswerSvg, QuizAttemptsSvg, QuizAttemptsTwoSvg, ReviewSvg, SettingSvg, WishlistSvg, WithdrawalSvg } from "@/components/svg/dashboard-icons";
 
 // dashboard menu data
 const dashboardMenuData = [

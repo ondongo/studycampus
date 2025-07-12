@@ -5,6 +5,12 @@ import DatePicker from "../ui/date-picker";
 import NiceSelect from "../ui/nice-select";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ErrMsg from "../err-msg";
+import { TypeStudent, Source } from "@/types/student";
+import { useRouter } from "next/navigation";
+import JSZip from "jszip";
+import { FirebaseUploadService } from "@/backend/services/firebase-upload.service";
+import { createStudent } from "@/backend/actions/students";
+
 
 type Inputs = {
   fname: string;
@@ -25,8 +31,222 @@ type Inputs = {
   additionalInfo: string;
 };
 
+
+async function handleStudentSubmit(
+  formData: {
+    fname: string;
+    lname: string;
+    email: string;
+    zipcode: string;
+    phone: string;
+    school: string;
+    yearCompletion: string;
+    qualification: string;
+    additionalInfo?: string;
+    birthDate: Date;
+    typeStudent: TypeStudent;
+    source: Source;
+  },
+  files: {
+    passportOrBirthCert?: File;
+    transcripts?: File[];
+    diplomas?: File[];
+    cv?: File;
+    recommendationLetter?: File;
+    certificate?: File;
+    photo?: File;
+  }
+): Promise<{ success: boolean; message: string; studentId?: string }> {
+  try {
+    // Validation des données requises
+    if (!formData.fname || !formData.lname || !formData.email) {
+      return {
+        success: false,
+        message: "Les informations personnelles (prénom, nom, email) sont requises."
+      };
+    }
+
+    if (!files.passportOrBirthCert) {
+      return {
+        success: false,
+        message: "Le passeport ou certificat de naissance est requis."
+      };
+    }
+
+    if (!files.photo) {
+      return {
+        success: false,
+        message: "La photo est requise."
+      };
+    }
+
+    // Validation de la taille des fichiers (max 10MB par fichier)
+    const maxFileSize = 10 * 1024 * 1024; // 10MB
+    const allFiles = [
+      files.passportOrBirthCert,
+      files.photo,
+      files.cv,
+      files.recommendationLetter,
+      files.certificate,
+      ...(files.transcripts || []),
+      ...(files.diplomas || [])
+    ].filter(Boolean);
+
+    for (const file of allFiles) {
+      if (file && file.size > maxFileSize) {
+        return {
+          success: false,
+          message: `Le fichier ${file.name} est trop volumineux. Taille maximum : 10MB.`
+        };
+      }
+    }
+
+    // 1. Créer le fichier ZIP avec tous les documents
+    const zip = new JSZip();
+    
+    // Ajouter les fichiers au ZIP
+    if (files.passportOrBirthCert) {
+      const extension = files.passportOrBirthCert.name.split('.').pop() || 'pdf';
+      zip.file(`passport_or_birth_cert.${extension}`, files.passportOrBirthCert);
+    }
+    
+    if (files.transcripts && files.transcripts.length > 0) {
+      files.transcripts.forEach((file, index) => {
+        const extension = file.name.split('.').pop() || 'pdf';
+        zip.file(`transcript_${index + 1}.${extension}`, file);
+      });
+    }
+    
+    if (files.diplomas && files.diplomas.length > 0) {
+      files.diplomas.forEach((file, index) => {
+        const extension = file.name.split('.').pop() || 'pdf';
+        zip.file(`diploma_${index + 1}.${extension}`, file);
+      });
+    }
+    
+    if (files.cv) {
+      const extension = files.cv.name.split('.').pop() || 'pdf';
+      zip.file(`cv.${extension}`, files.cv);
+    }
+    
+    if (files.recommendationLetter) {
+      const extension = files.recommendationLetter.name.split('.').pop() || 'pdf';
+      zip.file(`recommendation_letter.${extension}`, files.recommendationLetter);
+    }
+    
+    if (files.certificate) {
+      const extension = files.certificate.name.split('.').pop() || 'pdf';
+      zip.file(`certificate.${extension}`, files.certificate);
+    }
+
+    // 2. Générer le fichier ZIP
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    const zipFile = new File([zipBlob], `${formData.fname}_${formData.lname}_documents.zip`, {
+      type: "application/zip"
+    });
+
+    // 3. Upload du fichier ZIP vers Firebase
+    let zipUrl: string;
+    try {
+      zipUrl = await FirebaseUploadService.uploadZipFile(
+        zipFile,
+        "etudiants",
+        `${formData.fname}_${formData.lname}_documents.zip`
+      );
+    } catch (uploadError) {
+      console.error("Erreur lors de l'upload du ZIP:", uploadError);
+      return {
+        success: false,
+        message: "Erreur lors de l'upload des documents. Veuillez réessayer."
+      };
+    }
+
+    // 4. Upload de la photo vers Firebase (si fournie)
+    let profilePictureUrl: string | null = null;
+    if (files.photo) {
+      try {
+        profilePictureUrl = await FirebaseUploadService.uploadZipFile(
+          files.photo,
+          "etudiants/photos",
+          `${formData.fname}_${formData.lname}_photo.${files.photo.name.split('.').pop()}`
+        );
+      } catch (photoUploadError) {
+        console.error("Erreur lors de l'upload de la photo:", photoUploadError);
+        // On continue même si l'upload de la photo échoue
+      }
+    }
+
+    // 5. Créer l'objet étudiant pour Prisma
+    const studentData: any = {
+      id: "", 
+      fname: formData.fname,
+      lname: formData.lname,
+      email: formData.email,
+      codeCountry: "+242",
+      phone: formData.phone,
+      school: formData.school,
+      yearCompletion: formData.yearCompletion,
+      qualification: formData.qualification,
+      additionalInfo: formData.additionalInfo || null,
+      birthDate: formData.birthDate,
+      zipUrl: zipUrl,
+      profilePicture: profilePictureUrl,
+      createdAt: new Date(),
+      typeStudent: formData.typeStudent,
+      isSeen: false,
+      isContacted: false,
+      source: formData.source
+    };
+
+    // 6. Sauvegarder l'étudiant en base
+    try {
+      await createStudent(studentData);
+    } catch (dbError) {
+      console.error("Erreur lors de la sauvegarde en base:", dbError);
+      
+      // En cas d'erreur de sauvegarde, essayer de supprimer les fichiers uploadés
+      try {
+        if (FirebaseUploadService.isValidUrl(zipUrl)) {
+          await FirebaseUploadService.deleteFile(zipUrl);
+        }
+        if (profilePictureUrl && FirebaseUploadService.isValidUrl(profilePictureUrl)) {
+          await FirebaseUploadService.deleteFile(profilePictureUrl);
+        }
+      } catch (cleanupError) {
+        console.error("Erreur lors du nettoyage des fichiers:", cleanupError);
+      }
+      
+      return {
+        success: false,
+        message: "Erreur lors de la sauvegarde des données. Veuillez réessayer."
+      };
+    }
+
+    return {
+      success: true,
+      message: "Candidature soumise avec succès !",
+      studentId: studentData.id
+    };
+
+  } catch (error) {
+    console.error("Erreur lors de la soumission de la candidature:", error);
+    
+    return {
+      success: false,
+      message: "Une erreur inattendue est survenue lors de la soumission de votre candidature. Veuillez réessayer."
+    };
+  }
+}
 export default function FormulaireApplication() {
+  const router = useRouter();
   const [date, setDate] = useState(new Date());
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [selectedTypeStudent, setSelectedTypeStudent] = useState<TypeStudent>(
+    TypeStudent.NOUVEAU_BACHELIER
+  );
+
   const {
     register,
     handleSubmit,
@@ -37,11 +257,12 @@ export default function FormulaireApplication() {
   const [transcriptFiles, setTranscriptFiles] = useState<File[]>([]);
   const [diplomaFiles, setDiplomaFiles] = useState<File[]>([]);
   const [cvFile, setCvFile] = useState<File | null>(null);
+  const [certificateFile, setCertificateFile] = useState<File | null>(null);
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [passportFile, setPassportFile] = useState<File | null>(null);
   const [recommendationFile, setRecommendationFile] = useState<File | null>(
     null
   );
-  const [certificateFile, setCertificateFile] = useState<File | null>(null);
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
 
   const handleTranscriptChange = (e: any) => {
     if (e.target.files) {
@@ -67,6 +288,18 @@ export default function FormulaireApplication() {
     }
   };
 
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setPhotoFile(e.target.files[0]);
+    }
+  };
+
+  const handlePassportChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setPassportFile(e.target.files[0]);
+    }
+  };
+
   const handleRecommendationChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -75,36 +308,139 @@ export default function FormulaireApplication() {
     }
   };
 
-  const handleCertificateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setCertificateFile(e.target.files[0]);
-    }
-  };
-
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setPhotoFile(e.target.files[0]);
-    }
-  };
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    reset();
-  };
-
   function handleDegree(item: { value: string; label: string }) {
-    console.log(item);
+    // Mapper les valeurs du select vers les enum TypeStudent
+    switch (item.value) {
+      case "Nouveau Bachelier":
+        setSelectedTypeStudent(TypeStudent.NOUVEAU_BACHELIER);
+        break;
+      case "Pas encore le bac":
+        setSelectedTypeStudent(TypeStudent.PAS_ENCORE_BACHELIER);
+        break;
+      case "A une licence":
+        setSelectedTypeStudent(TypeStudent.LICENCE);
+        break;
+      default:
+        setSelectedTypeStudent(TypeStudent.NOUVEAU_BACHELIER);
+    }
   }
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+
+    try {
+      if (!passportFile) {
+        setError("Le passeport ou certificat de naissance est requis");
+        setLoading(false);
+        return;
+      }
+
+      if (!photoFile) {
+        setError("La photo est requise");
+        setLoading(false);
+        return;
+      }
+
+      const maxFileSize = 10 * 1024 * 1024; // 10MB
+      const allFiles = [
+        passportFile,
+        photoFile,
+        cvFile,
+        recommendationFile,
+        certificateFile,
+        ...transcriptFiles,
+        ...diplomaFiles,
+      ].filter(Boolean);
+
+      for (const file of allFiles) {
+        if (file && file.size > maxFileSize) {
+          setError(
+            `Le fichier ${file.name} est trop volumineux. Taille maximum : 10MB.`
+          );
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Préparer les données du formulaire
+      const formData = {
+        fname: data.fname,
+        lname: data.lname,
+        email: data.email,
+        zipcode: data.zipcode,
+        phone: data.phone,
+        school: data.school,
+        yearCompletion: data.yearCompletion,
+        qualification: data.qualification,
+        additionalInfo: data.additionalInfo,
+        birthDate: new Date(date),
+        typeStudent: selectedTypeStudent,
+        source: Source.CAMPUS_FRANCE as Source,
+      };
+
+      // Préparer les fichiers
+      const files = {
+        passportOrBirthCert: passportFile,
+        transcripts: transcriptFiles,
+        diplomas: diplomaFiles,
+        cv: cvFile || undefined,
+        recommendationLetter: recommendationFile || undefined,
+        certificate: certificateFile || undefined,
+        photo: photoFile,
+      };
+
+      // Appeler l'action serveur
+      const result = await handleStudentSubmit(formData, files);
+
+      if (result.success) {
+        setSuccess(true);
+        reset();
+        setTranscriptFiles([]);
+        setDiplomaFiles([]);
+        setCvFile(null);
+        setCertificateFile(null);
+        setPhotoFile(null);
+        setPassportFile(null);
+        setRecommendationFile(null);
+
+        setTimeout(() => {
+          router.push("/candidature/success");
+        }, 2000);
+      } else {
+        setError(result.message);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la soumission>>>>>:", error);
+      setError(
+        "Une erreur est survenue lors de la soumission de votre candidature. Veuillez réessayer."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <form id="contact-form" onSubmit={handleSubmit(onSubmit)}>
+      {success && (
+        <div className="alert alert-success" role="alert">
+          <i className="fas fa-check-circle me-2"></i>
+          Votre candidature a été soumise avec succès ! Vous allez être
+          redirigé...
+        </div>
+      )}
+
       <div className="tp-contact-input-form application">
         <h4 className="tp-application-from-title">Détails du candidat</h4>
         <div className="row">
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                Prénom <span style={{color:"red" , background:"transparent"}}>*</span>
+                Prénom{" "}
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
               <input
                 type="text"
@@ -117,7 +453,10 @@ export default function FormulaireApplication() {
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                Nom <span style={{color:"red" , background:"transparent"}}>*</span>
+                Nom{" "}
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
               <input
                 type="text"
@@ -129,7 +468,10 @@ export default function FormulaireApplication() {
           <div className="col-xl-12 col-lg-12">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                Adresse e-mail <span style={{color:"red" , background:"transparent"}}>*</span>
+                Adresse e-mail{" "}
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
               <input
                 type="email"
@@ -141,7 +483,10 @@ export default function FormulaireApplication() {
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                Code postal <span style={{color:"red" , background:"transparent"}}>*</span>
+                Code postal{" "}
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
               <input
                 type="text"
@@ -157,7 +502,10 @@ export default function FormulaireApplication() {
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                Numéro de téléphone <span style={{color:"red" , background:"transparent"}}>*</span>
+                Numéro de téléphone{" "}
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
               <input
                 type="text"
@@ -171,7 +519,10 @@ export default function FormulaireApplication() {
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                Date de naissance <span style={{color:"red" , background:"transparent"}}>*</span>
+                Date de naissance{" "}
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
               <DatePicker date={date} setDate={setDate} />
               <span className="icon">
@@ -182,14 +533,17 @@ export default function FormulaireApplication() {
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                Type étudiant <span style={{color:"red" , background:"transparent"}}>*</span>
+                Type étudiant{" "}
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
               <div className="tp-application-select">
                 <NiceSelect
                   cls="wide"
                   options={[
                     { value: "Nouveau Bachelier", label: "Nouveau Bachelier" },
-                    { value: "Pas encore le bac ", label: "Pas encore le bac" },
+                    { value: "Pas encore le bac", label: "Pas encore le bac" },
                     { value: "A une licence", label: "A une licence" },
                   ]}
                   defaultCurrent={0}
@@ -208,7 +562,10 @@ export default function FormulaireApplication() {
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                École <span style={{color:"red" , background:"transparent"}}>*</span>
+                École{" "}
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
               <input
                 type="text"
@@ -222,7 +579,10 @@ export default function FormulaireApplication() {
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                Année obtention du diplôme <span style={{color:"red" , background:"transparent"}}>*</span>
+                Année obtention du diplôme{" "}
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
               <input
                 type="text"
@@ -238,7 +598,10 @@ export default function FormulaireApplication() {
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                Qualification obtenue <span style={{color:"red" , background:"transparent"}}>*</span>
+                Qualification obtenue{" "}
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
               <input
                 type="text"
@@ -256,21 +619,45 @@ export default function FormulaireApplication() {
 
       <div className="tp-contact-input-form application">
         <h4 className="tp-application-from-title">Documents à fournir</h4>
+        <div className="alert alert-info mb-4">
+          <h6 className="alert-heading">
+            <i className="fas fa-info-circle me-2"></i>
+            Informations importantes
+          </h6>
+          <ul className="mb-0 small">
+            <li>Taille maximum par fichier : 10MB</li>
+            <li>Formats acceptés : PDF, DOC, DOCX, JPG, JPEG, PNG</li>
+           
+          </ul>
+        </div>
+
         <div className="row">
           <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
+            <div className="tp-contact-input schedule p-relative mb-3">
+              <label htmlFor="passportOrBirthCert">
                 Téléchargez le passeport ou certificat de naissance{" "}
-           
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
+
               <input
                 type="file"
-                {...register("passportOrBirthCert", {
-                  required: "Ce document est requis",
-                })}
+                id="passportOrBirthCert"
+                className={`form-control ${
+                  errors.passportOrBirthCert ? "is-invalid" : ""
+                }`}
+                accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
+                onChange={handlePassportChange}
               />
+
               {errors.passportOrBirthCert?.message && (
-                <ErrMsg msg={errors.passportOrBirthCert.message} />
+                <div className="invalid-feedback d-block mt-1">
+                  {errors.passportOrBirthCert.message}
+                </div>
+              )}
+              {passportFile && (
+                <span className="d-block mt-1">{passportFile.name}</span>
               )}
             </div>
           </div>
@@ -278,11 +665,16 @@ export default function FormulaireApplication() {
             <div className="tp-contact-input schedule p-relative">
               <label>
                 Téléchargez vos bulletins scolaires (jusqu&apos;à 9){" "}
-              
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>{" "}
               </label>
               <input
                 type="file"
                 multiple
+                className={`form-control ${
+                  errors.transcripts ? "is-invalid" : ""
+                }`}
                 accept=".pdf, .doc, .docx"
                 onChange={handleTranscriptChange}
               />
@@ -291,7 +683,9 @@ export default function FormulaireApplication() {
               )}
               <div className="file-list">
                 {transcriptFiles.map((file, index) => (
-                  <span key={index}>{file.name}</span>
+                  <span key={index} className="d-block mt-1">
+                    {file.name}
+                  </span>
                 ))}
               </div>
             </div>
@@ -300,54 +694,98 @@ export default function FormulaireApplication() {
             <div className="tp-contact-input schedule p-relative">
               <label>
                 Téléchargez vos diplômes (jusqu'à 6){" "}
-               
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>{" "}
               </label>
               <input
                 type="file"
                 multiple
+                className={`form-control`}
                 accept=".pdf, .doc, .docx"
                 onChange={handleDiplomaChange}
               />
               <div className="file-list">
                 {diplomaFiles.map((file, index) => (
-                  <span key={index}>{file.name}</span>
+                  <span key={index} className="d-block mt-1">
+                    {file.name}
+                  </span>
                 ))}
               </div>
             </div>
           </div>
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
-              <label>
-                Téléchargez votre CV 
-              </label>
+              <label>Téléchargez votre CV</label>
               <input
                 type="file"
                 accept=".pdf, .doc, .docx"
+                className={`form-control`}
                 onChange={handleCvChange}
               />
-              {cvFile && <span>{cvFile.name}</span>}
+              {cvFile && <span className="d-block mt-1">{cvFile.name}</span>}
+            </div>
+          </div>
+
+          <div className="col-xl-6 col-lg-6">
+            <div className="tp-contact-input schedule p-relative">
+              <label>Lettre de recommandation (optionnel)</label>
+              <input
+                type="file"
+                accept=".pdf, .doc, .docx"
+                className={`form-control`}
+                onChange={handleRecommendationChange}
+              />
+              {recommendationFile && (
+                <span className="d-block mt-1">{recommendationFile.name}</span>
+              )}
             </div>
           </div>
 
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>
-                Ajoutez votre photo <span style={{color:"red" , background:"transparent"}}>*</span>
+                Ajoutez votre photo{" "}
+                <span style={{ color: "red", background: "transparent" }}>
+                  *
+                </span>
               </label>
               <input
                 type="file"
                 accept="image/*"
+                className={`form-control`}
                 onChange={handlePhotoChange}
               />
-              {photoFile && <span>{photoFile.name}</span>}
+              {photoFile && (
+                <span className="d-block mt-1">{photoFile.name}</span>
+              )}
             </div>
           </div>
         </div>
       </div>
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          <i className="fas fa-exclamation-triangle me-2"></i>
+          {error}
+        </div>
+      )}
 
       <div className="col-12">
-        <button type="submit">
-          Soumettre <RightArrowSeven />
+        <button className="tp-btn" type="submit" disabled={loading}>
+          {loading ? (
+            <>
+              <span
+                className="spinner-border spinner-border-sm me-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Soumission en cours...
+            </>
+          ) : (
+            <>
+              Soumettre <RightArrowSeven />
+            </>
+          )}
         </button>
       </div>
     </form>

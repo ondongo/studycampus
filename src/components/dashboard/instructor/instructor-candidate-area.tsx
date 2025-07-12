@@ -101,7 +101,7 @@ const etudiantsCongolaisData = [
   },
 ];
 
-const tabs = ["Tous", "Boursier", "Payant"];
+const tabs = ["Tous", "Campus France", "Bourse"];
 
 export default function InstructorCandidateArea() {
   const [activeTab, setActiveTab] = useState(tabs[0]);
@@ -140,7 +140,7 @@ export default function InstructorCandidateArea() {
         <div className="row">
           <div className="col-lg-6">
             <div className="tp-dashboard-section">
-              <h2 className="tp-dashboard-title">Liste des étudiants congolais</h2>
+              <h2 className="tp-dashboard-title">Liste des candidatures</h2>
             </div>
           </div>
         </div>

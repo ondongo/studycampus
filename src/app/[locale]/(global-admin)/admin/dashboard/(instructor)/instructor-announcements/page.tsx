@@ -1,23 +1,23 @@
-import { Metadata } from "next";
-import DashboardBanner from "@/components/dashboard/dashboard-banner";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import DashboardContentWrapper from "@/components/dashboard/dashboard-content-wrapper";
+import AnnonceForm from "@/components/dashboard/annonce-form";
+import {
+  getAllAnnoncesAction,
+  createAnnonceAction,
+  updateAnnonceAction,
+  deleteAnnonceAction,
+} from "@/backend/actions/annonces";
+import { CreateAnnonceData, UpdateAnnonceData, Annonce } from "@/types/annonce";
 import InstructorAnnouncementArea from "@/components/dashboard/instructor/instructor-announcement-area";
 import AnnouncementModal from "@/components/modal/announcement-modal";
-import AnnounceDetailsModal from "@/components/modal/announce-details-modal";
 
-export const metadata: Metadata = {
-  title: "Instructor Announcements - Acadia",
-};
+export default function AnnoncesPage() {
 
-export default function InstructorAnnouncementsPage() {
   return (
     <>
-      <InstructorAnnouncementArea />
-
-      {/* announcement modal */}
-      <AnnouncementModal />
-      <AnnounceDetailsModal />
-      {/* announcement modal */}
+      <InstructorAnnouncementArea /> <AnnouncementModal />
     </>
   );
 }

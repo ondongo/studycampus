@@ -35,12 +35,22 @@ export const StudentController = {
     return await studentService.deleteStudent(id);
   },
 
+  async markStudentAsSeen(id: string): Promise<void> {
+    return await studentService.markStudentAsSeen(id);
+  },
+
+  async markStudentAsContacted(id: string): Promise<void> {
+    return await studentService.markStudentAsContacted(id);
+  },
+
   async getFilteredStudents(
     filters: {
       searchQuery?: string;
-      Date?: Date;
-
-      typeEtudiant?: string;
+      typeStudent?: string;
+      isSeen?: boolean;
+      isContacted?: boolean;
+      startDate?: Date;
+      endDate?: Date;
     },
     pagination: {
       page?: number;

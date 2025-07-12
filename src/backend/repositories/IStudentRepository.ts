@@ -6,9 +6,11 @@ export interface IStudentRepository extends IRepository<Etudiant> {
   getFilteredStudents(
     filters: {
       searchQuery?: string;
-      Date?: Date;
-
-      typeEtudiant?: string;
+      typeStudent?: string;
+      isSeen?: boolean;
+      isContacted?: boolean;
+      startDate?: Date;
+      endDate?: Date;
     },
     pagination: {
       page?: number;

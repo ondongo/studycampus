@@ -28,13 +28,22 @@ export class StudentService {
     return this.repository.delete(id);
   }
 
+  async markStudentAsSeen(id: string): Promise<void> {
+    return this.repository.update(id, { isSeen: true });
+  }
+
+  async markStudentAsContacted(id: string): Promise<void> {
+    return this.repository.update(id, { isContacted: true });
+  }
 
   async getFilteredStudents(
     filters: {
       searchQuery?: string;
-      Date?: Date;
-
-      typeEtudiant?: string;
+      typeStudent?: string;
+      isSeen?: boolean;
+      isContacted?: boolean;
+      startDate?: Date;
+      endDate?: Date;
     },
     pagination: {
       page?: number;

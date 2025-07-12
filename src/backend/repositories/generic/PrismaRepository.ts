@@ -1,6 +1,7 @@
 import { PaginatedResult } from "@/types/allType";
 import { IRepository } from "./IRepository";
-import { prisma } from "../../configs/prisma";
+import { prisma } from "@/configs/prisma";
+
 export class GenericRepository<T> implements IRepository<T> {
   private model: any;
 
@@ -31,6 +32,13 @@ export class GenericRepository<T> implements IRepository<T> {
       where: { id: entity.id },
       update: entity,
       create: entity,
+    });
+  }
+
+  async update(id: string, data: Partial<T>): Promise<void> {
+    await this.model.update({
+      where: { id },
+      data,
     });
   }
 

@@ -5,6 +5,11 @@ export enum TypeStudent {
     DIPLOME_SUPERIEUR   = 'DIPLOME_SUPERIEUR'
 }
 
+export enum Source {
+    BOURSE = 'BOURSE',
+    CAMPUS_FRANCE = 'CAMPUS_FRANCE'
+}
+
 export interface Etudiant {
     id: string;
     fname: string;
@@ -20,6 +25,7 @@ export interface Etudiant {
     zipUrl: string;
     createdAt: Date;
     typeStudent: TypeStudent;
+    source: Source;
     isSeen: boolean;
     isContacted: boolean;
 }

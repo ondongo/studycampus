@@ -1,4 +1,4 @@
-import { Prisma, Etudiant } from "@prisma/client";
+import {  Etudiant } from "@prisma/client";
 import { IStudentRepository } from "./IStudentRepository";
 import { GenericRepository } from "./generic/PrismaRepository";
 import { prisma } from "@/configs/prisma";
@@ -15,16 +15,18 @@ export class StudentRepository
   async getFilteredStudents(
     filters: {
       searchQuery?: string;
-      Date?: Date;
-
-      typeEtudiant?: string;
+      typeStudent?: string;
+      isSeen?: boolean;
+      isContacted?: boolean;
+      startDate?: Date;
+      endDate?: Date;
     },
     pagination: {
       page?: number;
       pageSize?: number;
     }
   ):Promise<PaginatedResult<Etudiant>> {
-    const { searchQuery, Date, typeEtudiant } = filters;
+    const { searchQuery, typeStudent, isSeen, isContacted, startDate, endDate } = filters;
     const { page = 1, pageSize = 10 } = pagination;
 
     const whereClause: any = {};
@@ -38,14 +40,26 @@ export class StudentRepository
       ];
     }
 
-    if (Date) {
-      whereClause.birthDate = {
-        equals: Date
-      };
+    if (typeStudent) {
+      whereClause.typeStudent = typeStudent;
     }
 
-    if (typeEtudiant) {
-      whereClause.typeStudent = typeEtudiant;
+    if (isSeen !== undefined) {
+      whereClause.isSeen = isSeen;
+    }
+
+    if (isContacted !== undefined) {
+      whereClause.isContacted = isContacted;
+    }
+
+    if (startDate || endDate) {
+      whereClause.createdAt = {};
+      if (startDate) {
+        whereClause.createdAt.gte = startDate;
+      }
+      if (endDate) {
+        whereClause.createdAt.lte = endDate;
+      }
     }
 
     const total = await prisma.etudiant.count({ where: whereClause });
@@ -62,7 +76,6 @@ export class StudentRepository
     return {
       data,
       totalItems: total,
-      
       totalPages: Math.ceil(total / pageSize)
     };
   }
