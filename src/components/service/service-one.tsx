@@ -61,12 +61,12 @@ export default function ServiceOne() {
                     </span>
                   </div>
                   <h4 className="tp-service-title">
-                    <Link href="/university-about">
+                    <Link href="/university-application-form">
                       {item.title}
                     </Link>
                   </h4>
                   <div className="tp-service-btn">
-                    <Link href="/university-about">
+                    <Link href="/university-application-form">
                       <span>
                         <RightArrowTwo />
                       </span>

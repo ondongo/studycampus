@@ -11,7 +11,6 @@ import JSZip from "jszip";
 import { FirebaseUploadService } from "@/backend/services/firebase-upload.service";
 import { createStudent } from "@/backend/actions/students";
 
-
 type Inputs = {
   fname: string;
   lname: string;
@@ -27,10 +26,9 @@ type Inputs = {
   cv: FileList;
   recommendationLetter: FileList;
   certificate: FileList; // Pour une attestation, par exemple
-  photo: FileList; // Pour la photo
+  photo: FileList; 
   additionalInfo: string;
 };
-
 
 async function handleStudentSubmit(
   formData: {
@@ -62,21 +60,22 @@ async function handleStudentSubmit(
     if (!formData.fname || !formData.lname || !formData.email) {
       return {
         success: false,
-        message: "Les informations personnelles (prénom, nom, email) sont requises."
+        message:
+          "Les informations personnelles (prénom, nom, email) sont requises.",
       };
     }
 
     if (!files.passportOrBirthCert) {
       return {
         success: false,
-        message: "Le passeport ou certificat de naissance est requis."
+        message: "Le passeport ou certificat de naissance est requis.",
       };
     }
 
     if (!files.photo) {
       return {
         success: false,
-        message: "La photo est requise."
+        message: "La photo est requise.",
       };
     }
 
@@ -89,61 +88,73 @@ async function handleStudentSubmit(
       files.recommendationLetter,
       files.certificate,
       ...(files.transcripts || []),
-      ...(files.diplomas || [])
+      ...(files.diplomas || []),
     ].filter(Boolean);
 
     for (const file of allFiles) {
       if (file && file.size > maxFileSize) {
         return {
           success: false,
-          message: `Le fichier ${file.name} est trop volumineux. Taille maximum : 10MB.`
+          message: `Le fichier ${file.name} est trop volumineux. Taille maximum : 10MB.`,
         };
       }
     }
 
     // 1. Créer le fichier ZIP avec tous les documents
     const zip = new JSZip();
-    
+
     // Ajouter les fichiers au ZIP
     if (files.passportOrBirthCert) {
-      const extension = files.passportOrBirthCert.name.split('.').pop() || 'pdf';
-      zip.file(`passport_or_birth_cert.${extension}`, files.passportOrBirthCert);
+      const extension =
+        files.passportOrBirthCert.name.split(".").pop() || "pdf";
+      zip.file(
+        `passport_or_birth_cert.${extension}`,
+        files.passportOrBirthCert
+      );
     }
-    
+
     if (files.transcripts && files.transcripts.length > 0) {
       files.transcripts.forEach((file, index) => {
-        const extension = file.name.split('.').pop() || 'pdf';
+        const extension = file.name.split(".").pop() || "pdf";
         zip.file(`transcript_${index + 1}.${extension}`, file);
       });
     }
-    
+
     if (files.diplomas && files.diplomas.length > 0) {
       files.diplomas.forEach((file, index) => {
-        const extension = file.name.split('.').pop() || 'pdf';
+        const extension = file.name.split(".").pop() || "pdf";
         zip.file(`diploma_${index + 1}.${extension}`, file);
       });
     }
-    
+
     if (files.cv) {
-      const extension = files.cv.name.split('.').pop() || 'pdf';
+      const extension = files.cv.name.split(".").pop() || "pdf";
       zip.file(`cv.${extension}`, files.cv);
     }
-    
+
     if (files.recommendationLetter) {
-      const extension = files.recommendationLetter.name.split('.').pop() || 'pdf';
-      zip.file(`recommendation_letter.${extension}`, files.recommendationLetter);
+      const extension =
+        files.recommendationLetter.name.split(".").pop() || "pdf";
+      zip.file(
+        `recommendation_letter.${extension}`,
+        files.recommendationLetter
+      );
     }
-    
+
     if (files.certificate) {
-      const extension = files.certificate.name.split('.').pop() || 'pdf';
+      const extension = files.certificate.name.split(".").pop() || "pdf";
       zip.file(`certificate.${extension}`, files.certificate);
     }
 
     // 2. Générer le fichier ZIP
     const zipBlob = await zip.generateAsync({ type: "blob" });
-    const zipFile = new File([zipBlob], `${formData.fname}_${formData.lname}_documents.zip`, {
-      type: "application/zip"
-    });
+    const zipFile = new File(
+      [zipBlob],
+      `${formData.fname}_${formData.lname}_documents.zip`,
+      {
+        type: "application/zip",
+      }
+    );
 
     // 3. Upload du fichier ZIP vers Firebase
     let zipUrl: string;
@@ -157,7 +168,7 @@ async function handleStudentSubmit(
       console.error("Erreur lors de l'upload du ZIP:", uploadError);
       return {
         success: false,
-        message: "Erreur lors de l'upload des documents. Veuillez réessayer."
+        message: "Erreur lors de l'upload des documents. Veuillez réessayer.",
       };
     }
 
@@ -168,7 +179,9 @@ async function handleStudentSubmit(
         profilePictureUrl = await FirebaseUploadService.uploadZipFile(
           files.photo,
           "etudiants/photos",
-          `${formData.fname}_${formData.lname}_photo.${files.photo.name.split('.').pop()}`
+          `${formData.fname}_${formData.lname}_photo.${files.photo.name
+            .split(".")
+            .pop()}`
         );
       } catch (photoUploadError) {
         console.error("Erreur lors de l'upload de la photo:", photoUploadError);
@@ -178,7 +191,7 @@ async function handleStudentSubmit(
 
     // 5. Créer l'objet étudiant pour Prisma
     const studentData: any = {
-      id: "", 
+      id: "",
       fname: formData.fname,
       lname: formData.lname,
       email: formData.email,
@@ -195,7 +208,7 @@ async function handleStudentSubmit(
       typeStudent: formData.typeStudent,
       isSeen: false,
       isContacted: false,
-      source: formData.source
+      source: formData.source,
     };
 
     // 6. Sauvegarder l'étudiant en base
@@ -203,41 +216,79 @@ async function handleStudentSubmit(
       await createStudent(studentData);
     } catch (dbError) {
       console.error("Erreur lors de la sauvegarde en base:", dbError);
-      
+
       // En cas d'erreur de sauvegarde, essayer de supprimer les fichiers uploadés
       try {
         if (FirebaseUploadService.isValidUrl(zipUrl)) {
           await FirebaseUploadService.deleteFile(zipUrl);
         }
-        if (profilePictureUrl && FirebaseUploadService.isValidUrl(profilePictureUrl)) {
+        if (
+          profilePictureUrl &&
+          FirebaseUploadService.isValidUrl(profilePictureUrl)
+        ) {
           await FirebaseUploadService.deleteFile(profilePictureUrl);
         }
       } catch (cleanupError) {
         console.error("Erreur lors du nettoyage des fichiers:", cleanupError);
       }
-      
+
       return {
         success: false,
-        message: "Erreur lors de la sauvegarde des données. Veuillez réessayer."
+        message:
+          "Erreur lors de la sauvegarde des données. Veuillez réessayer.",
       };
     }
 
     return {
       success: true,
       message: "Candidature soumise avec succès !",
-      studentId: studentData.id
+      studentId: studentData.id,
     };
-
   } catch (error) {
     console.error("Erreur lors de la soumission de la candidature:", error);
-    
+
     return {
       success: false,
-      message: "Une erreur inattendue est survenue lors de la soumission de votre candidature. Veuillez réessayer."
+      message:
+        "Une erreur inattendue est survenue lors de la soumission de votre candidature. Veuillez réessayer.",
     };
   }
 }
 export default function FormulaireApplication() {
+  // Styles CSS pour les champs de fichiers
+  const fileInputStyles = `
+    .file-input-wrapper {
+      margin-bottom: 10px;
+    }
+    
+    .file-input-wrapper label {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .file-input-wrapper label:hover {
+      background-color: #e9ecef;
+      border-color: #dee2e6;
+      color: white;
+    }
+    
+    .selected-file {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6 !important;
+    }
+    
+    .selected-file:hover {
+      background-color: #e9ecef;
+    }
+    
+    .selected-file .btn-danger {
+      transition: all 0.3s ease;
+    }
+    
+    .selected-file .btn-danger:hover {
+      transform: scale(1.05);
+    }
+  `;
   const router = useRouter();
   const [date, setDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
@@ -308,6 +359,41 @@ export default function FormulaireApplication() {
     }
   };
 
+  const handleCertificateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setCertificateFile(e.target.files[0]);
+    }
+  };
+
+  // Fonctions de suppression des fichiers
+  const removeTranscriptFile = (index: number) => {
+    setTranscriptFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+  };
+
+  const removeDiplomaFile = (index: number) => {
+    setDiplomaFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+  };
+
+  const removeCvFile = () => {
+    setCvFile(null);
+  };
+
+  const removePhotoFile = () => {
+    setPhotoFile(null);
+  };
+
+  const removePassportFile = () => {
+    setPassportFile(null);
+  };
+
+  const removeRecommendationFile = () => {
+    setRecommendationFile(null);
+  };
+
+  const removeCertificateFile = () => {
+    setCertificateFile(null);
+  };
+
   function handleDegree(item: { value: string; label: string }) {
     // Mapper les valeurs du select vers les enum TypeStudent
     switch (item.value) {
@@ -339,6 +425,18 @@ export default function FormulaireApplication() {
 
       if (!photoFile) {
         setError("La photo est requise");
+        setLoading(false);
+        return;
+      }
+
+      if (transcriptFiles.length === 0) {
+        setError("Au moins un bulletin scolaire est requis");
+        setLoading(false);
+        return;
+      }
+    
+      if (diplomaFiles.length === 0) {
+        setError("Au moins un diplôme est requis");
         setLoading(false);
         return;
       }
@@ -395,6 +493,29 @@ export default function FormulaireApplication() {
       const result = await handleStudentSubmit(formData, files);
 
       if (result.success) {
+        await fetch("/api/sendMail", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fname: formData.fname,
+            lname: formData.lname,
+            email: formData.email,
+            phone: formData.phone,
+            birthDate: formData.birthDate,
+            zipUrl: result.studentId
+              ? `https://firebasestorage.googleapis.com/.../${formData.fname}_${formData.lname}_documents.zip`
+              : "", // Remplace par l'URL ZIP si elle est ailleurs
+            profilePicture: files.photo
+              ? `https://firebasestorage.googleapis.com/.../${formData.fname}_${
+                  formData.lname
+                }_photo.${files.photo.name.split(".").pop()}`
+              : null,
+            typeStudent: formData.typeStudent,
+            source: formData.source,
+          }),
+        });
         setSuccess(true);
         reset();
         setTranscriptFiles([]);
@@ -405,9 +526,7 @@ export default function FormulaireApplication() {
         setPassportFile(null);
         setRecommendationFile(null);
 
-        setTimeout(() => {
-          router.push("/candidature/success");
-        }, 2000);
+        router.push("/candidature/success");
       } else {
         setError(result.message);
       }
@@ -422,7 +541,9 @@ export default function FormulaireApplication() {
   };
 
   return (
-    <form id="contact-form" onSubmit={handleSubmit(onSubmit)}>
+    <>
+      <style>{fileInputStyles}</style>
+      <form id="contact-form" onSubmit={handleSubmit(onSubmit)}>
       {success && (
         <div className="alert alert-success" role="alert">
           <i className="fas fa-check-circle me-2"></i>
@@ -627,7 +748,6 @@ export default function FormulaireApplication() {
           <ul className="mb-0 small">
             <li>Taille maximum par fichier : 10MB</li>
             <li>Formats acceptés : PDF, DOC, DOCX, JPG, JPEG, PNG</li>
-           
           </ul>
         </div>
 
@@ -641,15 +761,22 @@ export default function FormulaireApplication() {
                 </span>
               </label>
 
-              <input
-                type="file"
-                id="passportOrBirthCert"
-                className={`form-control ${
-                  errors.passportOrBirthCert ? "is-invalid" : ""
-                }`}
-                accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
-                onChange={handlePassportChange}
-              />
+              <div className="file-input-wrapper">
+                <input
+                  type="file"
+                  id="passportOrBirthCert"
+                  className={`form-control ${
+                    errors.passportOrBirthCert ? "is-invalid" : ""
+                  }`}
+                  accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
+                  onChange={handlePassportChange}
+                  style={{ display: 'none' }}
+                />
+                <label htmlFor="passportOrBirthCert" className="btn btn-outline-secondary">
+                  <i className="fas fa-upload me-2"></i>
+                  Choisir un fichier
+                </label>
+              </div>
 
               {errors.passportOrBirthCert?.message && (
                 <div className="invalid-feedback d-block mt-1">
@@ -657,7 +784,20 @@ export default function FormulaireApplication() {
                 </div>
               )}
               {passportFile && (
-                <span className="d-block mt-1">{passportFile.name}</span>
+                <div className="selected-file mt-2 p-2 border rounded">
+                  <span className="d-flex align-items-center">
+                    <i className="fas fa-file me-2"></i>
+                    {passportFile.name}
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-danger ms-auto"
+                      onClick={removePassportFile}
+                    >
+                      <i className="fas fa-trash me-1"></i>
+                      Supprimer
+                    </button>
+                  </span>
+                </div>
               )}
             </div>
           </div>
@@ -669,23 +809,42 @@ export default function FormulaireApplication() {
                   *
                 </span>{" "}
               </label>
-              <input
-                type="file"
-                multiple
-                className={`form-control ${
-                  errors.transcripts ? "is-invalid" : ""
-                }`}
-                accept=".pdf, .doc, .docx"
-                onChange={handleTranscriptChange}
-              />
+              <div className="file-input-wrapper">
+                <input
+                  type="file"
+                  multiple
+                  className={`form-control ${
+                    errors.transcripts ? "is-invalid" : ""
+                  }`}
+                  accept=".pdf, .doc, .docx"
+                  onChange={handleTranscriptChange}
+                  style={{ display: 'none' }}
+                  id="transcripts"
+                />
+                <label htmlFor="transcripts" className="btn btn-outline-secondary">
+                  <i className="fas fa-upload me-2"></i>
+                  Ajouter des fichiers
+                </label>
+              </div>
               {errors.transcripts?.message && (
                 <ErrMsg msg={errors.transcripts.message} />
               )}
-              <div className="file-list">
+              <div className="file-list mt-2">
                 {transcriptFiles.map((file, index) => (
-                  <span key={index} className="d-block mt-1">
-                    {file.name}
-                  </span>
+                  <div key={index} className="selected-file p-2 border rounded mb-2">
+                    <span className="d-flex align-items-center">
+                      <i className="fas fa-file me-2"></i>
+                      {file.name}
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-danger ms-auto"
+                        onClick={() => removeTranscriptFile(index)}
+                      >
+                        <i className="fas fa-trash me-1"></i>
+                        Supprimer
+                      </button>
+                    </span>
+                  </div>
                 ))}
               </div>
             </div>
@@ -698,18 +857,37 @@ export default function FormulaireApplication() {
                   *
                 </span>{" "}
               </label>
-              <input
-                type="file"
-                multiple
-                className={`form-control`}
-                accept=".pdf, .doc, .docx"
-                onChange={handleDiplomaChange}
-              />
-              <div className="file-list">
+              <div className="file-input-wrapper">
+                <input
+                  type="file"
+                  multiple
+                  className={`form-control`}
+                  accept=".pdf, .doc, .docx"
+                  onChange={handleDiplomaChange}
+                  style={{ display: 'none' }}
+                  id="diplomas"
+                />
+                <label htmlFor="diplomas" className="btn btn-outline-secondary">
+                  <i className="fas fa-upload me-2"></i>
+                  Ajouter des fichiers
+                </label>
+              </div>
+              <div className="file-list mt-2">
                 {diplomaFiles.map((file, index) => (
-                  <span key={index} className="d-block mt-1">
-                    {file.name}
-                  </span>
+                  <div key={index} className="selected-file p-2 border rounded mb-2">
+                    <span className="d-flex align-items-center">
+                      <i className="fas fa-file me-2"></i>
+                      {file.name}
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-danger ms-auto"
+                        onClick={() => removeDiplomaFile(index)}
+                      >
+                        <i className="fas fa-trash me-1"></i>
+                        Supprimer
+                      </button>
+                    </span>
+                  </div>
                 ))}
               </div>
             </div>
@@ -717,27 +895,71 @@ export default function FormulaireApplication() {
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>Téléchargez votre CV</label>
-              <input
-                type="file"
-                accept=".pdf, .doc, .docx"
-                className={`form-control`}
-                onChange={handleCvChange}
-              />
-              {cvFile && <span className="d-block mt-1">{cvFile.name}</span>}
+              <div className="file-input-wrapper">
+                <input
+                  type="file"
+                  accept=".pdf, .doc, .docx"
+                  className={`form-control`}
+                  onChange={handleCvChange}
+                  style={{ display: 'none' }}
+                  id="cv"
+                />
+                <label htmlFor="cv" className="btn btn-outline-secondary">
+                  <i className="fas fa-upload me-2"></i>
+                  Choisir un fichier
+                </label>
+              </div>
+              {cvFile && (
+                <div className="selected-file mt-2 p-2 border rounded">
+                  <span className="d-flex align-items-center">
+                    <i className="fas fa-file me-2"></i>
+                    {cvFile.name}
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-danger ms-auto"
+                      onClick={removeCvFile}
+                    >
+                      <i className="fas fa-trash me-1"></i>
+                      Supprimer
+                    </button>
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
           <div className="col-xl-6 col-lg-6">
             <div className="tp-contact-input schedule p-relative">
               <label>Lettre de recommandation (optionnel)</label>
-              <input
-                type="file"
-                accept=".pdf, .doc, .docx"
-                className={`form-control`}
-                onChange={handleRecommendationChange}
-              />
+              <div className="file-input-wrapper">
+                <input
+                  type="file"
+                  accept=".pdf, .doc, .docx"
+                  className={`form-control`}
+                  onChange={handleRecommendationChange}
+                  style={{ display: 'none' }}
+                  id="recommendation"
+                />
+                <label htmlFor="recommendation" className="btn btn-outline-secondary">
+                  <i className="fas fa-upload me-2"></i>
+                  Choisir un fichier
+                </label>
+              </div>
               {recommendationFile && (
-                <span className="d-block mt-1">{recommendationFile.name}</span>
+                <div className="selected-file mt-2 p-2 border rounded">
+                  <span className="d-flex align-items-center">
+                    <i className="fas fa-file me-2"></i>
+                    {recommendationFile.name}
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-danger ms-auto"
+                      onClick={removeRecommendationFile}
+                    >
+                      <i className="fas fa-trash me-1"></i>
+                      Supprimer
+                    </button>
+                  </span>
+                </div>
               )}
             </div>
           </div>
@@ -750,14 +972,70 @@ export default function FormulaireApplication() {
                   *
                 </span>
               </label>
-              <input
-                type="file"
-                accept="image/*"
-                className={`form-control`}
-                onChange={handlePhotoChange}
-              />
+              <div className="file-input-wrapper">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className={`form-control`}
+                  onChange={handlePhotoChange}
+                  style={{ display: 'none' }}
+                  id="photo"
+                />
+                <label htmlFor="photo" className="btn btn-outline-secondary">
+                  <i className="fas fa-upload me-2"></i>
+                  Choisir une image
+                </label>
+              </div>
               {photoFile && (
-                <span className="d-block mt-1">{photoFile.name}</span>
+                <div className="selected-file mt-2 p-2 border rounded">
+                  <span className="d-flex align-items-center">
+                    <i className="fas fa-image me-2"></i>
+                    {photoFile.name}
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-danger ms-auto"
+                      onClick={removePhotoFile}
+                    >
+                      <i className="fas fa-trash me-1"></i>
+                      Supprimer
+                    </button>
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="col-xl-6 col-lg-6">
+            <div className="tp-contact-input schedule p-relative">
+              <label>Attestation ou certificat (optionnel)</label>
+              <div className="file-input-wrapper">
+                <input
+                  type="file"
+                  accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
+                  className={`form-control`}
+                  onChange={handleCertificateChange}
+                  style={{ display: 'none' }}
+                  id="certificate"
+                />
+                <label htmlFor="certificate" className="btn btn-outline-secondary">
+                  <i className="fas fa-upload me-2"></i>
+                  Choisir un fichier
+                </label>
+              </div>
+              {certificateFile && (
+                <div className="selected-file mt-2 p-2 border rounded">
+                  <span className="d-flex align-items-center">
+                    <i className="fas fa-file me-2"></i>
+                    {certificateFile.name}
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-danger ms-auto"
+                      onClick={removeCertificateFile}
+                    >
+                      <i className="fas fa-trash me-1"></i>
+                      Supprimer
+                    </button>
+                  </span>
+                </div>
               )}
             </div>
           </div>
@@ -789,5 +1067,6 @@ export default function FormulaireApplication() {
         </button>
       </div>
     </form>
+    </>
   );
 }

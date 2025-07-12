@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+
 export async function POST(req: Request) {
   const BREVO_API_KEY = process.env.BREVO_API_KEY;
   const BREVO_URL = "https://api.brevo.com/v3/smtp/email";
@@ -14,111 +15,66 @@ export async function POST(req: Request) {
 
   try {
     const {
-      phone,
-      name,
+      fname,
+      lname,
       email,
-      reservationName,
-      date,
-      startDate,
-      endDate,
-      reservationType,
+      phone,
+      birthDate,
+      zipUrl,
+      profilePicture,
+      typeStudent,
+      source
     } = await req.json();
 
-    const subjectByType: Record<string, string> = {
-      sale: "Nouvelle demande d'achat - Kozua",
-      eclair: "Nouvelle réservation éclair - Kozua",
-      simple: "Nouvelle réservation simple - Kozua",
-    };
+    const generateEmailHtml = () => `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="UTF-8" />
+          <title>Nouvelle Candidature Étudiant</title>
+        </head>
+        <body style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6;">
+          <h2 style="color: #007bff;">Nouvelle candidature reçue</h2>
+          <p><strong>Nom :</strong> ${fname} ${lname}</p>
+          <p><strong>Email :</strong> ${email}</p>
+          <p><strong>Téléphone :</strong> ${phone}</p>
+          <p><strong>Date de naissance :</strong> ${new Date(birthDate).toLocaleDateString()}</p>
+          <p><strong>Type d'étudiant :</strong> ${typeStudent}</p>
+          <p><strong>Source :</strong> ${source}</p>
 
-    const subject =
-      subjectByType[reservationType] || "Nouvelle demande - Kozua";
+          <h3>Documents :</h3>
+          <ul>
+            <li><a href="${zipUrl}" target="_blank">Dossier ZIP de candidature</a></li>
+            ${
+              profilePicture
+                ? `<li><a href="${profilePicture}" target="_blank">Photo de profil</a></li>`
+                : ""
+            }
+          </ul>
 
-    if (!phone || !name || !reservationName || !date || !reservationType) {
-      return new NextResponse(
-        JSON.stringify({ message: "Données de réservation manquantes" }),
-        { status: 400 }
-      );
-    }
-
-    const generateEmailHtml = ({
-      name,
-      phone,
-      email,
-      reservationName,
-      date,
-      reservationType,
-      startDate,
-      endDate,
-    }: any) => `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="UTF-8" />
-        <title>Réservation sur Kozua</title>
-      </head>
-      <body style="font-family: Arial, sans-serif; background-color: #ffffff; padding: 20px; line-height: 1.6;">
-        
-        <div style="text-align: center; margin-bottom: 20px;">
-          <img src="https://ko-zua.vercel.app/_next/image?url=%2FKozua%20v3.png&w=3840&q=75" alt="Logo Kozua" style="max-width: 200px; height: auto;" />
-        </div>
-  
-        <h2 style="text-align: center; color: #D79B25;">Réservation sur Kozua</h2>
-  
-        <hr style="margin: 20px 0;" />
-  
-        <h3>Nouvelle demande de réservation</h3>
-        <p><strong>Nom :</strong> ${name}</p>
-        <p><strong>Email :</strong> ${email}</p>
-        <p><strong>Téléphone :</strong> ${phone}</p>
-        <p><strong>Résérvation :</strong> ${reservationName}</p>
-        <p><strong>Date de réservation :</strong> ${date}</p>
-           ${
-             startDate && endDate
-               ? `<p><strong>Date de début :</strong> ${startDate}</p>`
-               : ""
-           }
-        ${
-          startDate && endDate
-            ? `<p><strong>Date de fin :</strong> ${endDate}</p>`
-            : ""
-        }
-        <p><strong>Type de réservation :</strong> ${reservationType}</p>
-  
-        <hr style="margin: 30px 0;" />
-  
-        <p style="font-weight: bold;">Merci de traiter cette réservation, cordialement votre système de réservation.</p>
-  
-      </body>
-    </html>
-  `;
+          <p style="margin-top: 20px;">Merci de traiter cette candidature avec attention.</p>
+        </body>
+      </html>
+    `;
 
     const emailData = {
       sender: {
-        name: "Système de réservation Kozua",
-        email: "kozua2025@gmail.com",
+        name: "BlessingsTravels - Candidature",
+        email: "odigitalblessing@gmail.com",
       },
       to: [
         {
-          email: "Kozuaautomobile@gmail.com",
-          name: "Service Réservations",
+          email: "gloireondongo1205@gmail.com",
+          name: "Responsable Admissions",
         },
-
         {
-          email: "kozua2025@gmail.com",
-          name: "Admin Kozua",
+          email: "odigitalblessing@gmail.com",
+          name: "Responsable Admissions",
         },
+     
       ],
-      subject: subject,
-      htmlContent: generateEmailHtml({
-        name,
-        phone,
-        email,
-        reservationName,
-        date,
-        startDate,
-        endDate,
-        reservationType,
-      }),
+      subject: `Nouvelle candidature - ${fname} ${lname}`,
+      htmlContent: generateEmailHtml(),
     };
 
     const response = await fetch(BREVO_URL, {
@@ -136,20 +92,21 @@ export async function POST(req: Request) {
       console.error("Erreur Brevo:", errorText);
       return new NextResponse(
         JSON.stringify({
-          message: "Échec de l'envoi du mail",
+          message: "Échec de l'envoi de l'email",
           error: errorText,
         }),
         { status: response.status }
       );
     }
+
     return new NextResponse(
-      JSON.stringify({ message: "Message envoyé avec succès" }),
+      JSON.stringify({ message: "Email envoyé avec succès" }),
       { status: 200 }
     );
   } catch (error) {
-    console.error("Erreur lors de l'envoi du message:", error);
+    console.error("Erreur d'envoi:", error);
     return new NextResponse(
-      JSON.stringify({ message: "Erreur du serveur", error: error }),
+      JSON.stringify({ message: "Erreur du serveur", error }),
       { status: 500 }
     );
   }
