@@ -57,6 +57,7 @@
     "@types/react-flatpickr": "^3.8.11",
     "@types/react-modal-video": "^1.2.3",
     "@types/react-slick": "^0.23.13",
+    "eslint": "^9.31.0",
     "typescript": "^5"
   }
 }

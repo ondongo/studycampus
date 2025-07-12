@@ -4,12 +4,12 @@ import { AnnonceController } from "../controllers/AnnonceController";
 import { Annonce , UpdateAnnonceData } from "@/types/annonce";
 import { Annonce as PrismaAnnonce } from "@prisma/client";
 
-export async function createAnnonceAction(annonceData: Annonce): Promise<PrismaAnnonce> {
+export async function createAnnonceAction(annonceData: any): Promise<PrismaAnnonce> {
   return await AnnonceController.createAnnonce(annonceData);
 }
 
-export async function updateAnnonceAction(id: string, annonceData: UpdateAnnonceData, zipFile?: File): Promise<PrismaAnnonce> {
-  return await AnnonceController.updateAnnonce(id, annonceData, zipFile);
+export async function updateAnnonceAction(id: string, annonceData: UpdateAnnonceData): Promise<PrismaAnnonce> {
+  return await AnnonceController.updateAnnonce(id, annonceData);
 }
 
 export async function deleteAnnonceAction(id: string): Promise<void> {
