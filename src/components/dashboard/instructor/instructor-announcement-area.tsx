@@ -92,8 +92,8 @@ export default function InstructorAnnouncementArea() {
   const loadAnnonces = async () => {
     setLoading(true);
     try {
-      const result = await getAllAnnoncesAction(1, 50);
-      setAnnonces(result.annonces);
+      /* const result = await getAllAnnoncesAction(1, 50);
+      setAnnonces(result.annonces); */
     } catch (error) {
       console.error("Erreur lors du chargement des annonces:", error);
       setError("Impossible de charger les annonces");
