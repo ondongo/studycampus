@@ -121,7 +121,7 @@ export default function InstructorAnnouncementArea() {
     if (!editingAnnonce) return;
 
     try {
-      await updateAnnonceAction(editingAnnonce.id, data, zipFile);
+      await updateAnnonceAction(editingAnnonce.id, data);
       setSuccess("Annonce mise à jour avec succès !");
       setEditingAnnonce(null);
       setShowForm(false);
