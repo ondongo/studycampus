@@ -4,12 +4,12 @@ import { EvenementController } from "../controllers/EvenementController";
 import { Evenement, UpdateEvenementData } from "@/types/evenement";
 import { Evenement as PrismaEvenement } from "@prisma/client";
 
-export async function createEvenementAction(evenementData: Evenement): Promise<PrismaEvenement> {
+export async function createEvenementAction(evenementData: any): Promise<PrismaEvenement> {
   return await EvenementController.createEvenement(evenementData);
 }
 
-export async function updateEvenementAction(id: string, evenementData: UpdateEvenementData, zipFile?: File): Promise<PrismaEvenement> {
-  return await EvenementController.updateEvenement(id, evenementData, zipFile);
+export async function updateEvenementAction(id: string, evenementData: UpdateEvenementData): Promise<PrismaEvenement> {
+  return await EvenementController.updateEvenement(id, evenementData);
 }
 
 export async function deleteEvenementAction(id: string): Promise<void> {
