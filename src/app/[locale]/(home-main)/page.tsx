@@ -10,12 +10,8 @@ export const metadata: Metadata = {
   title: "Blessings Travels",
 };
 
-export default function Home({
-  params: { locale },
-}: {
-  params: { locale: string };
-}) {
-  setRequestLocale(locale);
+export default async function Home({ params }: any) {
+  await setRequestLocale(params.locale);
   return (
     <main>
       {/* hero area start */}
