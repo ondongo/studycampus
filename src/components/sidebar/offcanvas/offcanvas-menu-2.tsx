@@ -5,11 +5,14 @@ import NavAcademicDropdown from "@/components/header/navbar/dropdown/nav-academi
 import NavPagesDropdown from "@/components/header/navbar/dropdown/nav-pages-dropdown";
 import NavCourseDropdown from "@/components/header/navbar/dropdown/nav-course-dropdown";
 import NavHomeDropdown from "@/components/header/navbar/dropdown/nav-home-dropdown";
+import { useTranslations } from "next-intl";
 
 
 export default function OffcanvasMenuTwo() {
    const [subMenu, setSubMenu] = useState("");
    const [navTitle, setNavTitle] = useState("");
+   const t = useTranslations();
+   
    //openMobileMenu
    const openMobileMenu = (menu: string) => {
       if (navTitle === menu) {
@@ -35,7 +38,7 @@ export default function OffcanvasMenuTwo() {
                   {menu_data_2.map((menu) => (
                      <li key={menu.id} className={`has-dropdown ${menu.home_dropdown || menu.academic_dropdown || menu.course_dropdown || menu.pages_dropdown ? "tp-static" : ""} ${navTitle === menu.title ? "dropdown-opened expanded" : ""}`}>
                         <Link href={menu.link} className={`${menu.home_dropdown || menu.pages_dropdown ? "tp-static" : ""}`}>
-                           {menu.title} <button onClick={() => openMobileMenu(menu.title)} className={`dropdown-toggle-btn ${navTitle === menu.title ? "dropdown-opened" : ""}`}></button>
+                           {t(menu.title)} <button onClick={() => openMobileMenu(menu.title)} className={`dropdown-toggle-btn ${navTitle === menu.title ? "dropdown-opened" : ""}`}></button>
                         </Link>
 
                         {menu.home_dropdown && (
@@ -61,12 +64,12 @@ export default function OffcanvasMenuTwo() {
                               {menu.dashboard_dropdown.map((dpm) => (
                                  <li key={dpm.id} className={`has-dropdown ${dpm.title === subMenu ? "dropdown-opened expanded" : ""}`}>
                                     <Link href={dpm.link}>
-                                      {dpm.title} <button onClick={() => openSubMobileMenu(dpm.title)} className={`dropdown-toggle-btn ${subMenu === dpm.title ? "dropdown-opened" : ""}`}></button>
+                                      {t(dpm.title)} <button onClick={() => openSubMobileMenu(dpm.title)} className={`dropdown-toggle-btn ${subMenu === dpm.title ? "dropdown-opened" : ""}`}></button>
                                     </Link>
                                     <ul className="tp-submenu" style={{ display: subMenu === dpm.title ? "block" : "none" }}>
                                        {dpm.dropdown_menus.map((dm) => (
                                           <li key={dm.id}>
-                                             <Link href={dm.link}>{dm.title}</Link>
+                                             <Link href={dm.link}>{t(dm.title)}</Link>
                                           </li>
                                        ))}
                                     </ul>
@@ -85,7 +88,7 @@ export default function OffcanvasMenuTwo() {
                            <ul className="tp-submenu" style={{ display: navTitle === menu.title ? "block" : "none" }}>
                               {menu.dropdown_menus.map((dm) => (
                                  <li key={dm.id}>
-                                    <Link href={dm.link}>{dm.title}</Link>
+                                    <Link href={dm.link}>{t(dm.title)}</Link>
                                  </li>
                               ))}
                            </ul>

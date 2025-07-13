@@ -3,10 +3,13 @@ import menu_data from "@/data/menu-data";
 import { useState } from "react";
 import NavPagesDropdown from "@/components/header/navbar/dropdown/nav-pages-dropdown";
 import NavHomeDropdown from "@/components/header/navbar/dropdown/nav-home-dropdown";
+import { useTranslations } from "next-intl";
 
 
 export default function OffcanvasMenu() {
   const [navTitle, setNavTitle] = useState("");
+  const t = useTranslations();
+  
   //openMobileMenu
   const openMobileMenu = (menu: string) => {
     if (navTitle === menu) {
@@ -24,7 +27,7 @@ export default function OffcanvasMenu() {
           {menu_data.map((menu) => (
             <li key={menu.id} className={`has-dropdown ${menu.home_dropdown || menu.pages_dropdown ? "tp-static" : ""} ${navTitle === menu.title ? "dropdown-opened expanded" : ""}`}>
               <Link href={menu.link} className={`${menu.home_dropdown || menu.pages_dropdown ? "tp-static" : ""}`}>
-                {menu.title} <button onClick={() => openMobileMenu(menu.title)} className={`dropdown-toggle-btn ${navTitle === menu.title ? "dropdown-opened" : ""}`}></button>
+                {t(menu.title)} <button onClick={() => openMobileMenu(menu.title)} className={`dropdown-toggle-btn ${navTitle === menu.title ? "dropdown-opened" : ""}`}></button>
               </Link>
 
               {menu.home_dropdown && (
@@ -42,7 +45,7 @@ export default function OffcanvasMenu() {
                           <div className="tp-megamenu-list">
                             {menu.sm_mega_menus.slice(0, 4).map((dm) => (
                               <Link key={dm.id} href={dm.link}>
-                                {dm.title}
+                                {t(dm.title)}
                               </Link>
                             ))}
                           </div>
@@ -51,7 +54,7 @@ export default function OffcanvasMenu() {
                           <div className="tp-megamenu-list">
                             {menu.sm_mega_menus.slice(4).map((dm) => (
                               <Link key={dm.id} href={dm.link}>
-                                {dm.title}
+                                {t(dm.title)}
                               </Link>
                             ))}
                           </div>
@@ -72,7 +75,7 @@ export default function OffcanvasMenu() {
                 <ul className="tp-submenu" style={{ display: navTitle === menu.title ? "block" : "none" }}>
                   {menu.dropdown_menus.map((dm) => (
                     <li key={dm.id}>
-                      <Link href={dm.link}>{dm.title}</Link>
+                      <Link href={dm.link}>{t(dm.title)}</Link>
                     </li>
                   ))}
                 </ul>
