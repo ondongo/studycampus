@@ -26,7 +26,7 @@ type Inputs = {
   cv: FileList;
   recommendationLetter: FileList;
   certificate: FileList; // Pour une attestation, par exemple
-  photo: FileList; 
+  photo: FileList;
   additionalInfo: string;
 };
 
@@ -191,7 +191,7 @@ async function handleStudentSubmit(
 
     // 5. Créer l'objet étudiant pour Prisma
     const studentData: any = {
-      id:uuid() ,
+      id: uuid(),
       fname: formData.fname,
       lname: formData.lname,
       email: formData.email,
@@ -259,22 +259,50 @@ export default function FormulaireApplication() {
   const fileInputStyles = `
     .file-input-wrapper {
       margin-bottom: 10px;
+      width: 100%;
+    }
+    
+    .file-input-wrapper input {
+      display: none;
     }
     
     .file-input-wrapper label {
+      display: inline-block;
+      width: 100%;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.5;
+      color: #495057;
+      background-color: #fff;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
       cursor: pointer;
       transition: all 0.3s ease;
+      text-align: center;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     .file-input-wrapper label:hover {
       background-color: #e9ecef;
-      border-color: #dee2e6;
-      color: white;
+      border-color: #adb5bd;
+      color: #495057;
+    }
+    
+    .file-input-wrapper label:focus {
+      outline: none;
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     }
     
     .selected-file {
       background-color: #f8f9fa;
       border: 1px solid #dee2e6 !important;
+      border-radius: 4px;
+      padding: 8px 12px;
     }
     
     .selected-file:hover {
@@ -287,6 +315,10 @@ export default function FormulaireApplication() {
     
     .selected-file .btn-danger:hover {
       transform: scale(1.05);
+    }
+    
+    .file-list {
+      margin-top: 10px;
     }
   `;
   const router = useRouter();
@@ -367,11 +399,11 @@ export default function FormulaireApplication() {
 
   // Fonctions de suppression des fichiers
   const removeTranscriptFile = (index: number) => {
-    setTranscriptFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+    setTranscriptFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   const removeDiplomaFile = (index: number) => {
-    setDiplomaFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+    setDiplomaFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   const removeCvFile = () => {
@@ -434,7 +466,7 @@ export default function FormulaireApplication() {
         setLoading(false);
         return;
       }
-    
+
       if (diplomaFiles.length === 0) {
         setError("Au moins un diplôme est requis");
         setLoading(false);
@@ -544,529 +576,558 @@ export default function FormulaireApplication() {
     <>
       <style>{fileInputStyles}</style>
       <form id="contact-form" onSubmit={handleSubmit(onSubmit)}>
-      {success && (
-        <div className="alert alert-success" role="alert">
-          <i className="fas fa-check-circle me-2"></i>
-          Votre candidature a été soumise avec succès ! Vous allez être
-          redirigé...
-        </div>
-      )}
+        {success && (
+          <div className="alert alert-success" role="alert">
+            <i className="fas fa-check-circle me-2"></i>
+            Votre candidature a été soumise avec succès ! Vous allez être
+            redirigé...
+          </div>
+        )}
 
-      <div className="tp-contact-input-form application">
-        <h4 className="tp-application-from-title">Détails du candidat</h4>
-        <div className="row">
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Prénom{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-              <input
-                type="text"
-                {...register("fname", { required: "Le prénom est requis" })}
-                id="fname"
-              />
-              {errors.fname?.message && <ErrMsg msg={errors.fname.message} />}
-            </div>
-          </div>
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Nom{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-              <input
-                type="text"
-                {...register("lname", { required: "Le nom est requis" })}
-              />
-              {errors.lname?.message && <ErrMsg msg={errors.lname.message} />}
-            </div>
-          </div>
-          <div className="col-xl-12 col-lg-12">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Adresse e-mail{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-              <input
-                type="email"
-                {...register("email", { required: "L'email est requis" })}
-              />
-              {errors.email?.message && <ErrMsg msg={errors.email.message} />}
-            </div>
-          </div>
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Code postal{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-              <input
-                type="text"
-                {...register("zipcode", {
-                  required: "Le code postal est requis",
-                })}
-              />
-              {errors.zipcode?.message && (
-                <ErrMsg msg={errors.zipcode.message} />
-              )}
-            </div>
-          </div>
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Numéro de téléphone{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-              <input
-                type="text"
-                {...register("phone", {
-                  required: "Le numéro de téléphone est requis",
-                })}
-              />
-              {errors.phone?.message && <ErrMsg msg={errors.phone.message} />}
-            </div>
-          </div>
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Date de naissance{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-              <DatePicker date={date} setDate={setDate} />
-              <span className="icon">
-                <CalenderSvg />
-              </span>
-            </div>
-          </div>
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Type étudiant{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-              <div className="tp-application-select">
-                <NiceSelect
-                  cls="wide"
-                  options={[
-                    { value: "Nouveau Bachelier", label: "Nouveau Bachelier" },
-                    { value: "Pas encore le bac", label: "Pas encore le bac" },
-                    { value: "A une licence", label: "A une licence" },
-                  ]}
-                  defaultCurrent={0}
-                  onChange={(item) => handleDegree(item)}
-                  name="Degree"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="tp-contact-input-form application">
-        <h4 className="tp-application-from-title">Dossier académique</h4>
-        <div className="row">
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                École{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-              <input
-                type="text"
-                {...register("school", {
-                  required: "Le nom de l'école est requis",
-                })}
-              />
-              {errors.school?.message && <ErrMsg msg={errors.school.message} />}
-            </div>
-          </div>
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Année obtention du diplôme{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-              <input
-                type="text"
-                {...register("yearCompletion", {
-                  required: "L'année d'obtention du diplôme est requise",
-                })}
-              />
-              {errors.yearCompletion?.message && (
-                <ErrMsg msg={errors.yearCompletion.message} />
-              )}
-            </div>
-          </div>
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Qualification obtenue{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-              <input
-                type="text"
-                {...register("qualification", {
-                  required: "La qualification obtenue est requise",
-                })}
-              />
-              {errors.qualification?.message && (
-                <ErrMsg msg={errors.qualification.message} />
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="tp-contact-input-form application">
-        <h4 className="tp-application-from-title">Documents à fournir</h4>
-        <div className="alert alert-info mb-4">
-          <h6 className="alert-heading">
-            <i className="fas fa-info-circle me-2"></i>
-            Informations importantes
-          </h6>
-          <ul className="mb-0 small">
-            <li>Taille maximum par fichier : 10MB</li>
-            <li>Formats acceptés : PDF, DOC, DOCX, JPG, JPEG, PNG</li>
-          </ul>
-        </div>
-
-        <div className="row">
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative mb-3">
-              <label htmlFor="passportOrBirthCert">
-                Téléchargez le passeport ou certificat de naissance{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-
-              <div className="file-input-wrapper">
-                <input
-                  type="file"
-                  id="passportOrBirthCert"
-                  className={`form-control ${
-                    errors.passportOrBirthCert ? "is-invalid" : ""
-                  }`}
-                  accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
-                  onChange={handlePassportChange}
-                  style={{ display: 'none' }}
-                />
-                <label htmlFor="passportOrBirthCert" className="btn btn-outline-secondary">
-                  <i className="fas fa-upload me-2"></i>
-                  Choisir un fichier
-                </label>
-              </div>
-
-              {errors.passportOrBirthCert?.message && (
-                <div className="invalid-feedback d-block mt-1">
-                  {errors.passportOrBirthCert.message}
-                </div>
-              )}
-              {passportFile && (
-                <div className="selected-file mt-2 p-2 border rounded">
-                  <span className="d-flex align-items-center">
-                    <i className="fas fa-file me-2"></i>
-                    {passportFile.name}
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-danger ms-auto"
-                      onClick={removePassportFile}
-                    >
-                      <i className="fas fa-trash me-1"></i>
-                      Supprimer
-                    </button>
+        <div className="tp-contact-input-form application">
+          <h4 className="tp-application-from-title">Détails du candidat</h4>
+          <div className="row">
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Prénom{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
                   </span>
+                </label>
+                <input
+                  type="text"
+                  {...register("fname", { required: "Le prénom est requis" })}
+                  id="fname"
+                />
+                {errors.fname?.message && <ErrMsg msg={errors.fname.message} />}
+              </div>
+            </div>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Nom{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  {...register("lname", { required: "Le nom est requis" })}
+                />
+                {errors.lname?.message && <ErrMsg msg={errors.lname.message} />}
+              </div>
+            </div>
+            <div className="col-xl-12 col-lg-12">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Adresse e-mail{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>
+                </label>
+                <input
+                  type="email"
+                  {...register("email", { required: "L'email est requis" })}
+                />
+                {errors.email?.message && <ErrMsg msg={errors.email.message} />}
+              </div>
+            </div>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Code postal{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  {...register("zipcode", {
+                    required: "Le code postal est requis",
+                  })}
+                />
+                {errors.zipcode?.message && (
+                  <ErrMsg msg={errors.zipcode.message} />
+                )}
+              </div>
+            </div>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Numéro de téléphone{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  {...register("phone", {
+                    required: "Le numéro de téléphone est requis",
+                  })}
+                />
+                {errors.phone?.message && <ErrMsg msg={errors.phone.message} />}
+              </div>
+            </div>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Date de naissance{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>
+                </label>
+                <DatePicker date={date} setDate={setDate} />
+                <span className="icon">
+                  <CalenderSvg />
+                </span>
+              </div>
+            </div>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Type étudiant{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>
+                </label>
+                <div className="tp-application-select">
+                  <NiceSelect
+                    cls="wide"
+                    options={[
+                      {
+                        value: "Nouveau Bachelier",
+                        label: "Nouveau Bachelier",
+                      },
+                      {
+                        value: "Pas encore le bac",
+                        label: "Pas encore le bac",
+                      },
+                      { value: "A une licence", label: "A une licence" },
+                    ]}
+                    defaultCurrent={0}
+                    onChange={(item) => handleDegree(item)}
+                    name="Degree"
+                  />
                 </div>
-              )}
+              </div>
             </div>
           </div>
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Téléchargez vos bulletins scolaires (jusqu&apos;à 9){" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>{" "}
-              </label>
-              <div className="file-input-wrapper">
-                <input
-                  type="file"
-                  multiple
-                  className={`form-control ${
-                    errors.transcripts ? "is-invalid" : ""
-                  }`}
-                  accept=".pdf, .doc, .docx"
-                  onChange={handleTranscriptChange}
-                  style={{ display: 'none' }}
-                  id="transcripts"
-                />
-                <label htmlFor="transcripts" className="btn btn-outline-secondary">
-                  <i className="fas fa-upload me-2"></i>
-                  Ajouter des fichiers
+        </div>
+
+        <div className="tp-contact-input-form application">
+          <h4 className="tp-application-from-title">Dossier académique</h4>
+          <div className="row">
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  École{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>
                 </label>
+                <input
+                  type="text"
+                  {...register("school", {
+                    required: "Le nom de l'école est requis",
+                  })}
+                />
+                {errors.school?.message && (
+                  <ErrMsg msg={errors.school.message} />
+                )}
               </div>
-              {errors.transcripts?.message && (
-                <ErrMsg msg={errors.transcripts.message} />
-              )}
-              <div className="file-list mt-2">
-                {transcriptFiles.map((file, index) => (
-                  <div key={index} className="selected-file p-2 border rounded mb-2">
+            </div>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Année obtention du diplôme{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  {...register("yearCompletion", {
+                    required: "L'année d'obtention du diplôme est requise",
+                  })}
+                />
+                {errors.yearCompletion?.message && (
+                  <ErrMsg msg={errors.yearCompletion.message} />
+                )}
+              </div>
+            </div>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Qualification obtenue{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  {...register("qualification", {
+                    required: "La qualification obtenue est requise",
+                  })}
+                />
+                {errors.qualification?.message && (
+                  <ErrMsg msg={errors.qualification.message} />
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="tp-contact-input-form application">
+          <h4 className="tp-application-from-title">Documents à fournir</h4>
+          <div className="alert alert-info mb-4">
+            <h6 className="alert-heading">
+              <i className="fas fa-info-circle me-2"></i>
+              Informations importantes
+            </h6>
+            <ul className="mb-0 small">
+              <li>Taille maximum par fichier : 10MB</li>
+              <li>Formats acceptés : PDF, DOC, DOCX, JPG, JPEG, PNG</li>
+            </ul>
+          </div>
+
+          <div className="row">
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative mb-3">
+                <label htmlFor="passportOrBirthCert">
+                  Téléchargez le passeport ou certificat de naissance{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>
+                </label>
+
+                <div className="file-input-wrapper">
+                  <input
+                    type="file"
+                    id="passportOrBirthCert"
+                    className={`form-control ${
+                      errors.passportOrBirthCert ? "is-invalid" : ""
+                    }`}
+                    accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
+                    onChange={handlePassportChange}
+                    style={{ display: "none" }}
+                  />
+                  <label
+                    htmlFor="passportOrBirthCert"
+                    className="btn btn-outline-secondary"
+                  >
+                    <i className="fas fa-upload me-2"></i>
+                    Choisir un fichier
+                  </label>
+                </div>
+
+                {errors.passportOrBirthCert?.message && (
+                  <div className="invalid-feedback d-block mt-1">
+                    {errors.passportOrBirthCert.message}
+                  </div>
+                )}
+                {passportFile && (
+                  <div className="selected-file mt-2 p-2 border rounded">
                     <span className="d-flex align-items-center">
                       <i className="fas fa-file me-2"></i>
-                      {file.name}
+                      {passportFile.name}
                       <button
                         type="button"
                         className="btn btn-sm btn-danger ms-auto"
-                        onClick={() => removeTranscriptFile(index)}
+                        onClick={removePassportFile}
                       >
                         <i className="fas fa-trash me-1"></i>
                         Supprimer
                       </button>
                     </span>
                   </div>
-                ))}
+                )}
               </div>
             </div>
-          </div>
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Téléchargez vos diplômes (jusqu'à 6){" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>{" "}
-              </label>
-              <div className="file-input-wrapper">
-                <input
-                  type="file"
-                  multiple
-                  className={`form-control`}
-                  accept=".pdf, .doc, .docx"
-                  onChange={handleDiplomaChange}
-                  style={{ display: 'none' }}
-                  id="diplomas"
-                />
-                <label htmlFor="diplomas" className="btn btn-outline-secondary">
-                  <i className="fas fa-upload me-2"></i>
-                  Ajouter des fichiers
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Téléchargez vos bulletins scolaires (jusqu&apos;à 9){" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>{" "}
                 </label>
+                <div className="file-input-wrapper">
+                  <input
+                    type="file"
+                    multiple
+                    className={`form-control ${
+                      errors.transcripts ? "is-invalid" : ""
+                    }`}
+                    accept=".pdf, .doc, .docx"
+                    onChange={handleTranscriptChange}
+                    style={{ display: "none" }}
+                    id="transcripts"
+                  />
+                  <label
+                    htmlFor="transcripts"
+                    className="btn btn-outline-secondary"
+                  >
+                    <i className="fas fa-upload me-2"></i>
+                    Ajouter des fichiers
+                  </label>
+                </div>
+                {errors.transcripts?.message && (
+                  <ErrMsg msg={errors.transcripts.message} />
+                )}
+                <div className="file-list mt-2">
+                  {transcriptFiles.map((file, index) => (
+                    <div
+                      key={index}
+                      className="selected-file p-2 border rounded mb-2"
+                    >
+                      <span className="d-flex align-items-center">
+                        <i className="fas fa-file me-2"></i>
+                        {file.name}
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-danger ms-auto"
+                          onClick={() => removeTranscriptFile(index)}
+                        >
+                          <i className="fas fa-trash me-1"></i>
+                          Supprimer
+                        </button>
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="file-list mt-2">
-                {diplomaFiles.map((file, index) => (
-                  <div key={index} className="selected-file p-2 border rounded mb-2">
+            </div>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Téléchargez vos diplômes (jusqu'à 6){" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
+                  </span>{" "}
+                </label>
+                <div className="file-input-wrapper">
+                  <input
+                    type="file"
+                    multiple
+                    className={`form-control`}
+                    accept=".pdf, .doc, .docx"
+                    onChange={handleDiplomaChange}
+                    style={{ display: "none" }}
+                    id="diplomas"
+                  />
+                  <label
+                    htmlFor="diplomas"
+                    className="btn btn-outline-secondary"
+                  >
+                    <i className="fas fa-upload me-2"></i>
+                    Ajouter des fichiers
+                  </label>
+                </div>
+                <div className="file-list mt-2">
+                  {diplomaFiles.map((file, index) => (
+                    <div
+                      key={index}
+                      className="selected-file p-2 border rounded mb-2"
+                    >
+                      <span className="d-flex align-items-center">
+                        <i className="fas fa-file me-2"></i>
+                        {file.name}
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-danger ms-auto"
+                          onClick={() => removeDiplomaFile(index)}
+                        >
+                          <i className="fas fa-trash me-1"></i>
+                          Supprimer
+                        </button>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>Téléchargez votre CV (Optionnel)</label>
+                <div className="file-input-wrapper">
+                  <input
+                    type="file"
+                    accept=".pdf, .doc, .docx"
+                    className={`form-control`}
+                    onChange={handleCvChange}
+                    style={{ display: "none" }}
+                    id="cv"
+                  />
+                  <label htmlFor="cv" className="btn btn-outline-secondary">
+                    <i className="fas fa-upload me-2"></i>
+                    Choisir un fichier
+                  </label>
+                </div>
+                {cvFile && (
+                  <div className="selected-file mt-2 p-2 border rounded">
                     <span className="d-flex align-items-center">
                       <i className="fas fa-file me-2"></i>
-                      {file.name}
+                      {cvFile.name}
                       <button
                         type="button"
                         className="btn btn-sm btn-danger ms-auto"
-                        onClick={() => removeDiplomaFile(index)}
+                        onClick={removeCvFile}
                       >
                         <i className="fas fa-trash me-1"></i>
                         Supprimer
                       </button>
                     </span>
                   </div>
-                ))}
+                )}
               </div>
             </div>
-          </div>
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>Téléchargez votre CV</label>
-              <div className="file-input-wrapper">
-                <input
-                  type="file"
-                  accept=".pdf, .doc, .docx"
-                  className={`form-control`}
-                  onChange={handleCvChange}
-                  style={{ display: 'none' }}
-                  id="cv"
-                />
-                <label htmlFor="cv" className="btn btn-outline-secondary">
-                  <i className="fas fa-upload me-2"></i>
-                  Choisir un fichier
-                </label>
-              </div>
-              {cvFile && (
-                <div className="selected-file mt-2 p-2 border rounded">
-                  <span className="d-flex align-items-center">
-                    <i className="fas fa-file me-2"></i>
-                    {cvFile.name}
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-danger ms-auto"
-                      onClick={removeCvFile}
-                    >
-                      <i className="fas fa-trash me-1"></i>
-                      Supprimer
-                    </button>
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
 
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>Lettre de recommandation (optionnel)</label>
-              <div className="file-input-wrapper">
-                <input
-                  type="file"
-                  accept=".pdf, .doc, .docx"
-                  className={`form-control`}
-                  onChange={handleRecommendationChange}
-                  style={{ display: 'none' }}
-                  id="recommendation"
-                />
-                <label htmlFor="recommendation" className="btn btn-outline-secondary">
-                  <i className="fas fa-upload me-2"></i>
-                  Choisir un fichier
-                </label>
-              </div>
-              {recommendationFile && (
-                <div className="selected-file mt-2 p-2 border rounded">
-                  <span className="d-flex align-items-center">
-                    <i className="fas fa-file me-2"></i>
-                    {recommendationFile.name}
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-danger ms-auto"
-                      onClick={removeRecommendationFile}
-                    >
-                      <i className="fas fa-trash me-1"></i>
-                      Supprimer
-                    </button>
-                  </span>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>Lettre de recommandation (optionnel)</label>
+                <div className="file-input-wrapper">
+                  <input
+                    type="file"
+                    accept=".pdf, .doc, .docx"
+                    className={`form-control`}
+                    onChange={handleRecommendationChange}
+                    style={{ display: "none" }}
+                    id="recommendation"
+                  />
+                  <label
+                    htmlFor="recommendation"
+                    className="btn btn-outline-secondary"
+                  >
+                    <i className="fas fa-upload me-2"></i>
+                    Choisir un fichier
+                  </label>
                 </div>
-              )}
+                {recommendationFile && (
+                  <div className="selected-file mt-2 p-2 border rounded">
+                    <span className="d-flex align-items-center">
+                      <i className="fas fa-file me-2"></i>
+                      {recommendationFile.name}
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-danger ms-auto"
+                        onClick={removeRecommendationFile}
+                      >
+                        <i className="fas fa-trash me-1"></i>
+                        Supprimer
+                      </button>
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
 
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>
-                Ajoutez votre photo{" "}
-                <span style={{ color: "red", background: "transparent" }}>
-                  *
-                </span>
-              </label>
-              <div className="file-input-wrapper">
-                <input
-                  type="file"
-                  accept="image/*"
-                  className={`form-control`}
-                  onChange={handlePhotoChange}
-                  style={{ display: 'none' }}
-                  id="photo"
-                />
-                <label htmlFor="photo" className="btn btn-outline-secondary">
-                  <i className="fas fa-upload me-2"></i>
-                  Choisir une image
-                </label>
-              </div>
-              {photoFile && (
-                <div className="selected-file mt-2 p-2 border rounded">
-                  <span className="d-flex align-items-center">
-                    <i className="fas fa-image me-2"></i>
-                    {photoFile.name}
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-danger ms-auto"
-                      onClick={removePhotoFile}
-                    >
-                      <i className="fas fa-trash me-1"></i>
-                      Supprimer
-                    </button>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>
+                  Ajoutez votre photo{" "}
+                  <span style={{ color: "red", background: "transparent" }}>
+                    *
                   </span>
+                </label>
+                <div className="file-input-wrapper">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className={`form-control`}
+                    onChange={handlePhotoChange}
+                    style={{ display: "none" }}
+                    id="photo"
+                  />
+                  <label htmlFor="photo" className="btn btn-outline-secondary">
+                    <i className="fas fa-upload me-2"></i>
+                    Choisir une image
+                  </label>
                 </div>
-              )}
+                {photoFile && (
+                  <div className="selected-file mt-2 p-2 border rounded">
+                    <span className="d-flex align-items-center">
+                      <i className="fas fa-image me-2"></i>
+                      {photoFile.name}
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-danger ms-auto"
+                        onClick={removePhotoFile}
+                      >
+                        <i className="fas fa-trash me-1"></i>
+                        Supprimer
+                      </button>
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="col-xl-6 col-lg-6">
-            <div className="tp-contact-input schedule p-relative">
-              <label>Attestation ou certificat (optionnel)</label>
-              <div className="file-input-wrapper">
-                <input
-                  type="file"
-                  accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
-                  className={`form-control`}
-                  onChange={handleCertificateChange}
-                  style={{ display: 'none' }}
-                  id="certificate"
-                />
-                <label htmlFor="certificate" className="btn btn-outline-secondary">
-                  <i className="fas fa-upload me-2"></i>
-                  Choisir un fichier
-                </label>
-              </div>
-              {certificateFile && (
-                <div className="selected-file mt-2 p-2 border rounded">
-                  <span className="d-flex align-items-center">
-                    <i className="fas fa-file me-2"></i>
-                    {certificateFile.name}
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-danger ms-auto"
-                      onClick={removeCertificateFile}
-                    >
-                      <i className="fas fa-trash me-1"></i>
-                      Supprimer
-                    </button>
-                  </span>
+            <div className="col-xl-6 col-lg-6">
+              <div className="tp-contact-input schedule p-relative">
+                <label>Attestation ou certificat (optionnel)</label>
+                <div className="file-input-wrapper">
+                  <input
+                    type="file"
+                    accept=".pdf, .doc, .docx, .jpg, .jpeg, .png"
+                    className={`form-control`}
+                    onChange={handleCertificateChange}
+                    style={{ display: "none" }}
+                    id="certificate"
+                  />
+                  <label
+                    htmlFor="certificate"
+                    className="btn btn-outline-secondary"
+                  >
+                    <i className="fas fa-upload me-2"></i>
+                    Choisir un fichier
+                  </label>
                 </div>
-              )}
+                {certificateFile && (
+                  <div className="selected-file mt-2 p-2 border rounded">
+                    <span className="d-flex align-items-center">
+                      <i className="fas fa-file me-2"></i>
+                      {certificateFile.name}
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-danger ms-auto"
+                        onClick={removeCertificateFile}
+                      >
+                        <i className="fas fa-trash me-1"></i>
+                        Supprimer
+                      </button>
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      {error && (
-        <div className="alert alert-danger" role="alert">
-          <i className="fas fa-exclamation-triangle me-2"></i>
-          {error}
-        </div>
-      )}
+        {error && (
+          <div className="alert alert-danger" role="alert">
+            <i className="fas fa-exclamation-triangle me-2"></i>
+            {error}
+          </div>
+        )}
 
-      <div className="col-12">
-        <button className="tp-btn" type="submit" disabled={loading}>
-          {loading ? (
-            <>
-              <span
-                className="spinner-border spinner-border-sm me-2"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              Soumission en cours...
-            </>
-          ) : (
-            <>
-              Soumettre <RightArrowSeven />
-            </>
-          )}
-        </button>
-      </div>
-    </form>
+        <div className="col-12">
+          <button className="tp-btn" type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <span
+                  className="spinner-border spinner-border-sm me-2"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                Soumission en cours...
+              </>
+            ) : (
+              <>
+                Soumettre <RightArrowSeven />
+              </>
+            )}
+          </button>
+        </div>
+      </form>
     </>
   );
 }

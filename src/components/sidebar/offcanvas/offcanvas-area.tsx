@@ -3,13 +3,10 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "@/assets/img/logo/logoyeba.png";
 import {
-  BehanceSvg,
   CloseThreeSvg,
-  DribbleSvg,
   FbSvg,
   InstagramSvg,
   YoutubeSvg,
-  YoutubeTwoSvg,
 } from "@/components/svg";
 import OffcanvasMenu from "./offcanvas-menu";
 import OffcanvasMenuTwo from "./offcanvas-menu-2";
@@ -64,26 +61,8 @@ export default function OffcanvasArea({
               {offcanvas_menu_2 ? <OffcanvasMenuTwo /> : <OffcanvasMenu />}
               {/* mobile menu */}
 
-              <div className="offcanvas-gallery">
-                <div className="row gx-2">
-                  {galleryData.map((item, index) => (
-                    <div className="col-md-3 col-3" key={index}>
-                      <div className="offcanvas-gallery-img fix">
-                        <a href={item.link} target="_blank">
-                          <Image
-                            src={item.src}
-                            alt={`gallery-${index}`}
-                            width={87}
-                            height={87}
-                          />
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="tp-header-btn ml-30">
+        
+              <div className="tp-btn mb-30">
                 <Link href="https://calendly.com/gloireondongo1205/prise-de-contact?back=1&month=2025-05">
                   {t("book_appointment")}
                 </Link>
