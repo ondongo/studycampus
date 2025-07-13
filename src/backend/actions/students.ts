@@ -50,6 +50,7 @@ export async function getStudentById(id: string): Promise<Etudiant | null> {
     source: Student.source as Source,
     isSeen: Student.isSeen,
     isContacted: Student.isContacted,
+    profilePicture: Student.profilePicture ?? ""
   };
 }
 
@@ -74,6 +75,7 @@ export async function getAllStudents(page: number, pageSize: number) {
     source: Student.source as Source,
     isSeen: Student.isSeen,
     isContacted: Student.isContacted,
+    profilePicture: Student.profilePicture
   }));
   return {
     Students: data,
@@ -119,6 +121,7 @@ export async function getFilteredStudents(
       source: Student.source as Source,
       isSeen: Student.isSeen,
       isContacted: Student.isContacted,
+      profilePicture: Student.profilePicture
     }));
     return {
       Students: data,

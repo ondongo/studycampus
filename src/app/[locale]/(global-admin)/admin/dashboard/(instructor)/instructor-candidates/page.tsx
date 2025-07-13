@@ -2,7 +2,7 @@ import InstructorCandidateArea from "@/components/dashboard/instructor/instructo
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Instructor Reviews - Acadia",
+  title: "Instructor Reviews - BlessingTravel",
 };
 
 export default function InstructorReviewsPage() {

@@ -55,11 +55,11 @@ const dashboardMenuData = [
         icon: <EnrolledCourseSvg />,
         href: "/admin/dashboard/instructor-candidates",
       },
-      {
+    /*   {
         title: "Annonces",
         icon: <AnnouncementSvg />,
         href: "/admin/dashboard/instructor-announcements",
-      },
+      }, */
     ],
   },
   {

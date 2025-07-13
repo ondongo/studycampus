@@ -23,6 +23,7 @@ export interface Etudiant {
     additionalInfo?: string;
     birthDate: Date;
     zipUrl: string;
+    profilePicture?: string;
     createdAt: Date;
     typeStudent: TypeStudent;
     source: Source;
