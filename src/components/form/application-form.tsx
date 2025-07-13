@@ -636,15 +636,16 @@ export default function FormulaireApplication() {
             <div className="col-xl-6 col-lg-6">
               <div className="tp-contact-input schedule p-relative">
                 <label>
-                  Code postal{" "}
+                  Code pays{" "}
                   <span style={{ color: "red", background: "transparent" }}>
                     *
                   </span>
                 </label>
                 <input
                   type="text"
+                  placeholder="Ex : +242"
                   {...register("zipcode", {
-                    required: "Le code postal est requis",
+                    required: "Le code pays est requis (Ex:+242)",
                   })}
                 />
                 {errors.zipcode?.message && (
