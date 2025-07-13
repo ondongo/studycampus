@@ -180,36 +180,7 @@ export default function StudentDetailsModal({
             Fermer
           </button>
         </div>
-        <div className="tpd-modal-btn-wrap">
-          <button 
-            type="button" 
-            className="btn btn-outline-success me-2"
-            onClick={markAsSeen}
-            disabled={student.isSeen}
-          >
-            <OpenEye className="me-1" />
-            Marquer comme vu
-          </button>
-          <button 
-            type="button" 
-            className="btn btn-outline-info me-2"
-            onClick={markAsContacted}
-            disabled={student.isContacted}
-          >
-            <TelSvg className="me-1" />
-            Marquer comme contacté
-          </button>
-          {student.zipUrl && (
-            <button 
-              type="button" 
-              className="btn btn-outline-primary"
-              onClick={downloadStudentZip}
-            >
-              <DownloadTwoSvg className="me-1" />
-              Télécharger le dossier
-            </button>
-          )}
-        </div>
+    
       </div>
     </Modal>
   );
