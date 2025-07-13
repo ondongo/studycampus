@@ -201,3 +201,35 @@
         }
     }
 }
+
+.#{$dashboard-prifix}-modal {
+    &-evenement {
+        & .modal {
+            &-dialog {
+                border-radius: 16px;
+                max-width: 720px;
+            }
+            &-header {
+                padding: 26px 50px 14px 60px;
+                border: none;
+                @media #{$xs} {
+                    padding: 25px 45px 15px 20px;
+                }
+            }
+            &-body {
+                border-radius: 10px;
+                background: #EFF2FA;
+                margin:0 12px;
+                padding: 30px 36px 48px 36px;
+                @media #{$xs} {
+                    padding: 20px;
+                }
+            }
+            &-footer {
+                justify-content: space-between;
+                border: none;
+                padding: 17px 45px 17px 46px;
+            }
+        }
+    }
+}

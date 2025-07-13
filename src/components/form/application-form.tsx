@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import JSZip from "jszip";
 import { FirebaseUploadService } from "@/backend/services/firebase-upload.service";
 import { createStudent } from "@/backend/actions/students";
-
+import { v4 as uuid } from "uuid";
 type Inputs = {
   fname: string;
   lname: string;
@@ -191,7 +191,7 @@ async function handleStudentSubmit(
 
     // 5. Créer l'objet étudiant pour Prisma
     const studentData: any = {
-      id: "",
+      id:uuid() ,
       fname: formData.fname,
       lname: formData.lname,
       email: formData.email,

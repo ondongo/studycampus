@@ -1,22 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import NextAuth from 'next-auth';
+import authConfig from '@/configs/auth.config';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 
-// On fusionne le middleware next-intl (pour la gestion des locales) et l'authentification
-
+const { auth } = NextAuth(authConfig);
 const intlMiddleware = createMiddleware(routing);
 
-export async function middleware(req: NextRequest) {
+export default auth(async function middleware(req: NextRequest) {
   const intlResponse = intlMiddleware(req);
-  if (intlResponse) {
-    if (intlResponse.status !== 200) return intlResponse;
+  if (intlResponse && intlResponse.status !== 200) {
+    return intlResponse;
   }
 
+  const origin = req.nextUrl.origin;
+  const pathname = req.nextUrl.pathname.replace(/^\/[a-z]{2}(\/|$)/, '/');
 
-  const { pathname, origin } = req.nextUrl;
-
-  // On ne protège que les routes d'admin, signin et access-denied
   const isAdminRoute = pathname.startsWith('/admin');
   const isSigninRoute = pathname === '/signin';
   const isAccessDeniedRoute = pathname === '/access-denied';
@@ -26,37 +26,33 @@ export async function middleware(req: NextRequest) {
       req,
       secret: process.env.AUTH_SECRET,
       cookieName:
-        process.env.NODE_ENV === "production"
-          ? "__Secure-authjs.session-token"
-          : "authjs.session-token",
-      secureCookie: true,
+        process.env.NODE_ENV === 'production'
+          ? '__Secure-authjs.session-token'
+          : 'authjs.session-token',
+      secureCookie: process.env.NODE_ENV === 'production',
     });
 
-    // Rediriger un utilisateur déjà connecté qui tente d'accéder à /signin
     if (token && isSigninRoute) {
-      return NextResponse.redirect(`${origin}/admin`);
+      return NextResponse.redirect(new URL('/admin/dashboard', origin));
     }
 
-    // Rediriger un utilisateur non connecté qui tente d'accéder à une page protégée (hors /signin)
-    if (!token && !isSigninRoute) {
-      return NextResponse.redirect(`${origin}/signin`);
+    if (!token && (isAdminRoute || isAccessDeniedRoute)) {
+      return NextResponse.redirect(new URL('/signin', origin));
     }
 
-    // Rediriger un utilisateur connecté mais non admin qui tente d'accéder à /admin
-    if (token && token.role !== "admin" && isAdminRoute) {
-      return NextResponse.redirect(`${origin}/access-denied`);
+    if (token && token.role !== 'admin' && isAdminRoute) {
+      return NextResponse.redirect(new URL('/access-denied', origin));
     }
   }
 
-
   return intlResponse ?? NextResponse.next();
-}
+});
 
 export const config = {
   matcher: [
-    '/((?!api|trpc|_next|_vercel|.*\\..*).*)', // Pour next-intl (toutes les pages sauf API et fichiers statiques)
-    '/signin',
-    '/admin/:path*',
-    '/access-denied',
+    '/:locale((?!api|trpc|_next|_vercel|.*\\..*).*)',
+    '/:locale/signin',
+    '/:locale/admin/:path*',
+    '/:locale/access-denied',
   ],
 };

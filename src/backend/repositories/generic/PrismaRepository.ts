@@ -35,6 +35,12 @@ export class GenericRepository<T> implements IRepository<T> {
     });
   }
 
+  async create(entity: any): Promise<any> {
+    return await this.model.create({
+      data: entity
+    });
+  }
+
   async update(id: string, data: Partial<T>): Promise<void> {
     await this.model.update({
       where: { id },

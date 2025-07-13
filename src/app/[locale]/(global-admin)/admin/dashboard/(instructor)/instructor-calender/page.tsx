@@ -4,9 +4,10 @@ import DashboardContentWrapper from "@/components/dashboard/dashboard-content-wr
 import InstructorCalenderArea from "@/components/dashboard/instructor/instructor-calender-area";
 import AnnounceDetailsModal from "@/components/modal/announce-details-modal";
 import AnnouncementModal from "@/components/modal/announcement-modal";
+import EvenementModal from "@/components/modal/evenement-modal";
 
 export const metadata: Metadata = {
-  title: "Instructor Question Answer - Acadia",
+  title: "Instructor Question Answer - BlessingTravel",
 };
 
 export default function InstructorQuestionAnswerPage() {
@@ -15,6 +16,7 @@ export default function InstructorQuestionAnswerPage() {
       <InstructorCalenderArea />
       <AnnouncementModal />
       <AnnounceDetailsModal />
+      <EvenementModal />
     </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 import { GlobalContext } from "@/context/global-context";
 import { IAnnouncementDT } from "@/types/announcement-d-t";
+import { Evenement } from "@/types/evenement";
 import React, { useState } from "react";
 
 type IPropType = {
@@ -16,6 +17,12 @@ export default function GlobalContextProvider({ children }: IPropType) {
     useState<boolean>(false);
   const [announceEditMode, setAnnounceEditMode] = useState<IAnnouncementDT | null>(null);
 
+  // Nouvelles états pour les événements
+  const [showEvenementAddEditModal, setShowEvenementAddEditModal] =
+    useState<boolean>(false);
+  const [evenementEditMode, setEvenementEditMode] = useState<Evenement | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
   function handleAnnounceDetailsModal() {
     setShowAnnounceDetailsModal(!showAnnounceDetailsModal);
   }
@@ -29,6 +36,16 @@ export default function GlobalContextProvider({ children }: IPropType) {
     setShowAnnounceAddEditModal(!showAnnounceAddEditModal); // Toggle the modal visibility
 }
 
+  function handleEvenementAddEditModal(edit?: Evenement, selectedDate?: Date) {
+    if (edit) {
+        setEvenementEditMode(edit); // Set the edit data if it's passed
+        setSelectedDate(null); // Clear selected date when editing
+    } else {
+        setEvenementEditMode(null); // Clear the edit mode if no edit data is provided
+        setSelectedDate(selectedDate || null); // Set selected date if provided
+    }
+    setShowEvenementAddEditModal(!showEvenementAddEditModal); // Toggle the modal visibility
+  }
 
   return (
     <GlobalContext.Provider
@@ -38,6 +55,11 @@ export default function GlobalContextProvider({ children }: IPropType) {
         handleAnnounceDetailsModal,
         showAnnounceAddEditModal,
         showAnnounceDetailsModal,
+        // Nouvelles propriétés pour les événements
+        evenementEditMode,
+        showEvenementAddEditModal,
+        selectedDate,
+        handleEvenementAddEditModal,
       }}
     >
       {children}

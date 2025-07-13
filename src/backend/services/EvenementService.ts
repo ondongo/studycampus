@@ -23,18 +23,13 @@ export class EvenementService {
   }
 
   async createEvenement(evenementData: Evenement): Promise<Evenement> {
-
-
     const evenementToCreate = {
       ...evenementData,
       etat: evenementData.etat ?? true
     };
 
-    await this.repository.save(evenementToCreate as Evenement);
-    const createdEvenement = await this.repository.findById(evenementToCreate.id);
-    if (!createdEvenement) {
-      throw new Error('Erreur lors de la création de l\'événement');
-    }
+    // Pour la création, on utilise la méthode create du repository
+    const createdEvenement = await this.repository.create(evenementToCreate);
     
     return createdEvenement;
   }
@@ -44,13 +39,9 @@ export class EvenementService {
     if (!existingEvenement) {
       throw new Error('Événement non trouvé');
     }
-    const evenementToUpdate = {
-      ...existingEvenement,
-      ...evenementData,
-   
-    };
 
-    await this.repository.save(evenementToUpdate);
+    // Utiliser update au lieu de save pour éviter la création d'un nouvel événement
+    await this.repository.update(id, evenementData);
     
     // Récupérer l'événement mis à jour
     const updatedEvenement = await this.repository.findById(id);

@@ -1,20 +1,40 @@
-
-
-const profileData = [
-  { label: 'Registration Date', value: 'October 06, 2024 8:30 am' },
-  { label: 'First Name', value: 'Indigo' },
-  { label: 'Last Name', value: 'Violet' },
-  { label: 'Username', value: 'Instructor' },
-  { label: 'Email', value: 'example@gmail.com' },
-  { label: 'Phone Number', value: '+670 413 90 762' },
-  { label: 'Skill/Occupation', value: 'Full Stack Developer' },
-  {
-    label: 'Biography',
-    value: 'I have a degree in Journalism with over 15 years of work experience in the field. Throughout the years, I have worked in several well-known institutions and published several books on that are available.',
-  },
-];
+"use client"
+import { useSession } from "next-auth/react";
 
 export default function InstructorProfileArea() {
+  const { data: session } = useSession();
+
+  // Format the creation date
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  // Get profile data from session
+  const getProfileData = () => {
+    if (!session?.user) return [];
+
+    return [
+      { label: 'Nom d\'utilisateur', value: session.user.name || 'Non disponible' },
+      { label: 'Email', value: session.user.email || 'Non disponible' },
+      { label: 'Numéro de téléphone', value: '+(33) 7 53 27 52 53' },
+      { label: 'Dernière connexion', value: new Date().toLocaleDateString('fr-FR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }) },
+    ];
+  };
+
+  const profileData = getProfileData();
 
   return (
     <div className="tp-profile-wrapper">
