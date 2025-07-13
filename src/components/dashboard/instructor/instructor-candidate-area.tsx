@@ -143,41 +143,7 @@ export default function InstructorCandidateArea() {
       params.set("search", searchQuery.trim());
     }
 
-    if (selectedType) {
-      newFilters.typeStudent = selectedType;
-      params.set("type", selectedType);
-    }
 
-    if (selectedSource) {
-      newFilters.source = selectedSource;
-      params.set("source", selectedSource);
-    }
-
-    if (selectedSeenStatus === "seen") {
-      newFilters.isSeen = true;
-      params.set("seenStatus", "seen");
-    } else if (selectedSeenStatus === "unseen") {
-      newFilters.isSeen = false;
-      params.set("seenStatus", "unseen");
-    }
-
-    if (selectedContactStatus === "contacted") {
-      newFilters.isContacted = true;
-      params.set("contactStatus", "contacted");
-    } else if (selectedContactStatus === "uncontacted") {
-      newFilters.isContacted = false;
-      params.set("contactStatus", "uncontacted");
-    }
-
-    if (startDate) {
-      newFilters.startDate = startDate;
-      params.set("startDate", startDate.toISOString());
-    }
-
-    if (endDate) {
-      newFilters.endDate = endDate;
-      params.set("endDate", endDate.toISOString());
-    }
 
     // Mettre à jour l'URL avec les paramètres
     const newUrl = params.toString()
@@ -280,17 +246,7 @@ export default function InstructorCandidateArea() {
     }
   };
 
-  // Obtenir le label de la source
-  const getSourceLabel = (source: Source) => {
-    switch (source) {
-      case Source.BOURSE:
-        return "Boursier";
-      case Source.CAMPUS_FRANCE:
-        return "Payant";
-      default:
-        return source;
-    }
-  };
+  
 
   // Obtenir la classe CSS du statut vu
   const getSeenStatusClass = (isSeen: boolean) => {
@@ -342,7 +298,7 @@ export default function InstructorCandidateArea() {
               <div className="card-body">
                 <h5 className="card-title mb-3">Filtres</h5>
                 <div className="row d-flex align-items-center ">
-                  <div className="col-md-4">
+                  <div className="col-md-6">
                     <div className="form-group">
                       <label>Recherche</label>
                       <input
@@ -359,50 +315,8 @@ export default function InstructorCandidateArea() {
                       />
                     </div>
                   </div>
-                  <div className="col-md-3">
-                    <div className="form-group">
-                      <label>Type d'étudiant</label>
-                      <NiceSelect
-                        options={[
-                          { value: "", label: "Tous" },
-                          {
-                            value: "NOUVEAU_BACHELIER",
-                            label: "Nouveau Bachelier",
-                          },
-                          {
-                            value: "PAS_ENCORE_BACHELIER",
-                            label: "Pas encore Bachelier",
-                          },
-                          { value: "LICENCE", label: "Licence" },
-                          {
-                            value: "DIPLOME_SUPERIEUR",
-                            label: "Diplôme Supérieur",
-                          },
-                        ]}
-                        defaultCurrent={0}
-                        onChange={(item) => setSelectedType(item.value)}
-                        name="typeStudent"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-md-3 ">
-                    <div className="form-group">
-                      <label>Statut</label>
-                      <NiceSelect
-                        options={[
-                          { value: "", label: "Tous" },
-                          { value: "seen", label: "Vu" },
-                          { value: "unseen", label: "Non Vu" },
-                        ]}
-                        defaultCurrent={0}
-                        onChange={(item) => setSelectedSeenStatus(item.value)}
-                        name="seenStatus"
-                      />
-                    </div>
-                  </div>
-                
-                  <div className="col-md-2 d-flex align-items-end">
+             
+                  <div className="col-md-6 d-flex align-items-end">
                     <div className="form-group">
                       <label>Actions</label>
                       <div className="d-flex gap-2 w-100">
@@ -447,17 +361,15 @@ export default function InstructorCandidateArea() {
                   <table className="table table-hover mb-0">
                     <thead className="table-light">
                       <tr>
-                        <th style={{ width: "8%", padding: "15px" }}>Photo</th>
-                        <th style={{ width: "20%", padding: "15px" }}>
+                        <th style={{ width: "10%", padding: "15px" }}>Photo</th>
+                        <th style={{ width: "30%", padding: "15px" }}>
                           Nom & Téléphone
                         </th>
                         <th style={{ width: "20%", padding: "15px" }}>Email</th>
-                        <th style={{ width: "12%", padding: "15px" }}>Date</th>
-                        <th style={{ width: "15%", padding: "15px" }}>Type</th>
-                        <th style={{ width: "12%", padding: "15px" }}>
-                          Statuts
-                        </th>
-                        <th style={{ width: "14%", padding: "15px" }}>
+                        <th style={{ width: "10%", padding: "15px" }}>Date</th>
+                        <th style={{ width: "25%", padding: "15px" }}>Type</th>
+                       
+                        <th style={{ width: "5%", padding: "15px" }}>
                           Actions
                         </th>
                       </tr>
@@ -530,26 +442,7 @@ export default function InstructorCandidateArea() {
                               </div>
                             </div>
                           </td>
-                          <td style={{ padding: "15px" }}>
-                            <div className="d-flex flex-column gap-1">
-                              <span
-                                className={`badge ${getSeenStatusClass(
-                                  student.isSeen
-                                )}`}
-                                style={{ fontSize: "11px" }}
-                              >
-                                {getSeenStatusText(student.isSeen)}
-                              </span>
-                              <span
-                                className={`badge ${getContactStatusClass(
-                                  student.isContacted
-                                )}`}
-                                style={{ fontSize: "11px" }}
-                              >
-                                {getContactStatusText(student.isContacted)}
-                              </span>
-                            </div>
-                          </td>
+          
                           <td style={{ padding: "15px" }}>
                             <div className="d-flex gap-1 justify-content-center">
                               <div className="tpd-order-action">
@@ -584,32 +477,7 @@ export default function InstructorCandidateArea() {
                                   </button>
                                 </div>
 
-                              <div className="tpd-action-btn">
-                                <button
-                                  onClick={() => markAsSeen(student.id)}
-                                  title="Marquer comme vu"
-                                >
-                                  <OpenEye />
-                                  <span className="tpd-action-tooltip">
-                                    {" "}
-                                    Marquer comme vu
-                                  </span>
-                                </button>
-                              </div>
-
-
-                              <div className="tpd-action-btn">
-                                <button
-                                  onClick={() => markAsContacted(student.id)}
-                                  title="Marquer comme contacté"
-                                >
-                                     <TelSvg />
-                                  <span className="tpd-action-tooltip">
-                                    {" "}
-                                    Marquer comme contacté
-                                  </span>
-                                </button>
-                              </div>
+                    
                          
                             </div>
                           </td>
