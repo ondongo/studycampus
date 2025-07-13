@@ -28,16 +28,23 @@ export class GenericRepository<T> implements IRepository<T> {
   }
 
   async save(entity: any): Promise<void> {
-    await this.model.upsert({
-      where: { id: entity.id },
-      update: entity,
-      create: entity,
-    });
+    try {
+      console.log("Tentative de sauvegarde de l'étudiant:", entity.id);
+      await this.model.upsert({
+        where: { id: entity.id },
+        update: entity,
+        create: entity,
+      });
+      console.log("Étudiant sauvegardé avec succès:", entity.id);
+    } catch (error) {
+      console.error("Erreur lors de la sauvegarde de l'étudiant:", error);
+      throw error;
+    }
   }
 
   async create(entity: any): Promise<any> {
     return await this.model.create({
-      data: entity
+      data: entity,
     });
   }
 

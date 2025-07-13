@@ -56,8 +56,13 @@ async function handleStudentSubmit(
   }
 ): Promise<{ success: boolean; message: string; studentId?: string }> {
   try {
+    console.log("handleStudentSubmit: Début de la fonction");
+    console.log("Données reçues:", formData);
+    console.log("Fichiers reçus:", files);
+    
     // Validation des données requises
     if (!formData.fname || !formData.lname || !formData.email) {
+      console.log("Erreur: Données personnelles manquantes");
       return {
         success: false,
         message:
@@ -100,11 +105,13 @@ async function handleStudentSubmit(
       }
     }
 
+    console.log("Création du fichier ZIP...");
     // 1. Créer le fichier ZIP avec tous les documents
     const zip = new JSZip();
 
     // Ajouter les fichiers au ZIP
     if (files.passportOrBirthCert) {
+      console.log("Ajout du passeport au ZIP");
       const extension =
         files.passportOrBirthCert.name.split(".").pop() || "pdf";
       zip.file(
@@ -156,14 +163,17 @@ async function handleStudentSubmit(
       }
     );
 
+    console.log("Upload du fichier ZIP vers Firebase...");
     // 3. Upload du fichier ZIP vers Firebase
     let zipUrl: string;
     try {
+      console.log("Tentative d'upload du ZIP:", zipFile.name, zipFile.size);
       zipUrl = await FirebaseUploadService.uploadZipFile(
         zipFile,
         "etudiants",
         `${formData.fname}_${formData.lname}_documents.zip`
       );
+      console.log("ZIP uploadé avec succès, URL:", zipUrl);
     } catch (uploadError) {
       console.error("Erreur lors de l'upload du ZIP:", uploadError);
       return {
@@ -211,9 +221,12 @@ async function handleStudentSubmit(
       source: formData.source,
     };
 
+    console.log("Sauvegarde de l'étudiant en base...");
+    console.log("Données à sauvegarder:", studentData);
     // 6. Sauvegarder l'étudiant en base
     try {
       await createStudent(studentData);
+      console.log("Étudiant sauvegardé avec succès en base");
     } catch (dbError) {
       console.error("Erreur lors de la sauvegarde en base:", dbError);
 
@@ -556,35 +569,42 @@ export default function FormulaireApplication() {
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log("Début de la soumission du formulaire");
     setLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
+      console.log("Validation des fichiers...");
       if (!passportFile) {
+        console.log("Erreur: Passeport manquant");
         setError("Le passeport ou certificat de naissance est requis");
         setLoading(false);
         return;
       }
 
       if (!photoFile) {
+        console.log("Erreur: Photo manquante");
         setError("La photo est requise");
         setLoading(false);
         return;
       }
 
       if (transcriptFiles.length === 0) {
+        console.log("Erreur: Bulletins scolaires manquants");
         setError("Au moins un bulletin scolaire est requis");
         setLoading(false);
         return;
       }
 
       if (diplomaFiles.length === 0) {
+        console.log("Erreur: Diplômes manquants");
         setError("Au moins un diplôme est requis");
         setLoading(false);
         return;
       }
 
+      console.log("Validation de la taille des fichiers...");
       const maxFileSize = 10 * 1024 * 1024; // 10MB
       const allFiles = [
         passportFile,
@@ -596,8 +616,10 @@ export default function FormulaireApplication() {
         ...diplomaFiles,
       ].filter(Boolean);
 
+      console.log("Nombre total de fichiers:", allFiles.length);
       for (const file of allFiles) {
         if (file && file.size > maxFileSize) {
+          console.log("Erreur: Fichier trop volumineux:", file.name, file.size);
           setError(
             `Le fichier ${file.name} est trop volumineux. Taille maximum : 10MB.`
           );
@@ -605,6 +627,7 @@ export default function FormulaireApplication() {
           return;
         }
       }
+      console.log("Validation de la taille des fichiers terminée");
 
       // Préparer les données du formulaire
       const formData = {
@@ -633,8 +656,12 @@ export default function FormulaireApplication() {
         photo: photoFile,
       };
 
+      console.log("Appel de handleStudentSubmit avec les données:", formData);
+      console.log("Fichiers à traiter:", files);
+      
       // Appeler l'action serveur
       const result = await handleStudentSubmit(formData, files);
+      console.log("Résultat de handleStudentSubmit:", result);
 
       if (result.success) {
         await fetch("/api/sendMail", {
