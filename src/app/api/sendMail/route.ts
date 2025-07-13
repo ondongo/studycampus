@@ -60,7 +60,8 @@ export async function POST(req: Request) {
     const emailData = {
       sender: {
         name: "BlessingsTravels - Candidature",
-        email: "odigitalblessing@gmail.com",
+        /* email: "odigitalblessing@gmail.com", */
+        email: "kozua2025@gmail.com",
       },
       to: [
         {

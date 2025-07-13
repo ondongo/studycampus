@@ -1231,7 +1231,20 @@ export default function FormulaireApplication() {
                   className="spinner-border spinner-border-sm me-2"
                   role="status"
                   aria-hidden="true"
+                  style={{
+                    verticalAlign: "middle",
+                    display: "inline-block",
+                    animation: "spin 0.6s linear infinite"
+                  }}
                 ></span>
+                <style>
+                  {`
+                    @keyframes spin {
+                      0% { transform: rotate(0deg);}
+                      100% { transform: rotate(360deg);}
+                    }
+                  `}
+                </style>
                 Soumission en cours...
               </>
             ) : (
