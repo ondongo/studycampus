@@ -1109,7 +1109,7 @@ export default function FormulaireApplication() {
           </div>
         )}
 
-        <div className="col-12">
+        <div className="col-12 d-flex justify-content-end">
           <button className="tp-btn" type="submit" disabled={loading}>
             {loading ? (
               <>
