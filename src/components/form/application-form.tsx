@@ -320,6 +320,118 @@ export default function FormulaireApplication() {
     .file-list {
       margin-top: 10px;
     }
+    
+    /* Responsive design pour mobile */
+    @media (max-width: 768px) {
+      .col-xl-6.col-lg-6, .col-xl-6.col-lg-6.col-md-6.col-sm-12 {
+        margin-bottom: 20px;
+      }
+      
+      .file-input-wrapper label {
+        padding: 10px 15px;
+        font-size: 13px;
+        min-height: 44px;
+      }
+      
+      .selected-file {
+        padding: 6px 10px;
+      }
+      
+      .selected-file span {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      
+      .selected-file .btn-danger {
+        font-size: 12px;
+        padding: 4px 8px;
+      }
+      
+      /* Truncation des noms de fichiers */
+      .file-name-truncate {
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+      }
+      
+      /* Ajustement des colonnes pour mobile */
+      .mobile-full-width {
+        width: 100% !important;
+      }
+      
+      /* Réduction de la taille des textes pour mobile */
+      .tp-application-from-title {
+        font-size: 1.2rem;
+      }
+      
+      .alert-heading {
+        font-size: 0.9rem;
+      }
+      
+      .alert ul li {
+        font-size: 0.8rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .file-name-truncate {
+        max-width: 100px;
+      }
+      
+      .selected-file span {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .selected-file .btn-danger {
+        align-self: flex-end;
+        margin-top: 5px;
+      }
+      
+      /* Ajustements pour très petits écrans */
+      .tp-application-from-title {
+        font-size: 1.1rem;
+      }
+      
+      .alert {
+        padding: 0.75rem;
+      }
+      
+      .alert-heading {
+        font-size: 0.85rem;
+      }
+      
+      .alert ul li {
+        font-size: 0.75rem;
+      }
+      
+      /* Réduction des marges et paddings */
+      .tp-contact-input-form {
+        padding: 15px;
+      }
+      
+      .tp-contact-input {
+        margin-bottom: 15px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .file-name-truncate {
+        max-width: 80px;
+      }
+      
+      .selected-file .btn-danger {
+        font-size: 11px;
+        padding: 3px 6px;
+      }
+      
+      .file-input-wrapper label {
+        font-size: 12px;
+        padding: 8px 12px;
+      }
+    }
   `;
   const router = useRouter();
   const [date, setDate] = useState(new Date());
@@ -587,7 +699,7 @@ export default function FormulaireApplication() {
         <div className="tp-contact-input-form application">
           <h4 className="tp-application-from-title">Détails du candidat</h4>
           <div className="row">
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
                   Prénom{" "}
@@ -603,7 +715,7 @@ export default function FormulaireApplication() {
                 {errors.fname?.message && <ErrMsg msg={errors.fname.message} />}
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
                   Nom{" "}
@@ -618,7 +730,7 @@ export default function FormulaireApplication() {
                 {errors.lname?.message && <ErrMsg msg={errors.lname.message} />}
               </div>
             </div>
-            <div className="col-xl-12 col-lg-12">
+            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
                   Adresse e-mail{" "}
@@ -633,7 +745,7 @@ export default function FormulaireApplication() {
                 {errors.email?.message && <ErrMsg msg={errors.email.message} />}
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
                   Code pays{" "}
@@ -653,7 +765,7 @@ export default function FormulaireApplication() {
                 )}
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
                   Numéro de téléphone{" "}
@@ -670,7 +782,7 @@ export default function FormulaireApplication() {
                 {errors.phone?.message && <ErrMsg msg={errors.phone.message} />}
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
                   Date de naissance{" "}
@@ -684,7 +796,7 @@ export default function FormulaireApplication() {
                 </span>
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
                   Type étudiant{" "}
@@ -719,7 +831,7 @@ export default function FormulaireApplication() {
         <div className="tp-contact-input-form application">
           <h4 className="tp-application-from-title">Dossier académique</h4>
           <div className="row">
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
                   École{" "}
@@ -738,7 +850,7 @@ export default function FormulaireApplication() {
                 )}
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
                   Année obtention du diplôme{" "}
@@ -757,7 +869,7 @@ export default function FormulaireApplication() {
                 )}
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
                   Qualification obtenue{" "}
@@ -784,19 +896,20 @@ export default function FormulaireApplication() {
           <div className="alert alert-info mb-4">
             <h6 className="alert-heading">
               <i className="fas fa-info-circle me-2"></i>
-              Informations importantes
+              <span className="d-none d-sm-inline">Informations importantes</span>
+              <span className="d-inline d-sm-none">Infos</span>
             </h6>
             <ul className="mb-0 small">
-              <li>Taille maximum par fichier : 10MB</li>
-              <li>Formats acceptés : PDF, DOC, DOCX, JPG, JPEG, PNG</li>
+              <li><span className="d-none d-sm-inline">Taille maximum par fichier : </span><span className="d-inline d-sm-none">Max : </span>10MB</li>
+              <li><span className="d-none d-sm-inline">Formats acceptés : </span><span className="d-inline d-sm-none">Formats : </span>PDF, DOC, DOCX, JPG, JPEG, PNG</li>
             </ul>
           </div>
 
           <div className="row">
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative mb-3">
                 <label htmlFor="passportOrBirthCert">
-                  Téléchargez le passeport ou certificat de naissance{" "}
+                  Passeport/certificat naissance{" "}
                   <span style={{ color: "red", background: "transparent" }}>
                     *
                   </span>
@@ -831,24 +944,24 @@ export default function FormulaireApplication() {
                   <div className="selected-file mt-2 p-2 border rounded">
                     <span className="d-flex align-items-center">
                       <i className="fas fa-file me-2"></i>
-                      {passportFile.name}
+                      <span className="file-name-truncate">{passportFile.name}</span>
                       <button
                         type="button"
                         className="btn btn-sm btn-danger ms-auto"
                         onClick={removePassportFile}
                       >
                         <i className="fas fa-trash me-1"></i>
-                        Supprimer
+                        <span className="d-sm-inline">Supprimer</span>
                       </button>
                     </span>
                   </div>
                 )}
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
-                  Téléchargez vos bulletins scolaires (jusqu&apos;à 9){" "}
+                  Bulletins scolaires (max 9){" "}
                   <span style={{ color: "red", background: "transparent" }}>
                     *
                   </span>{" "}
@@ -884,14 +997,14 @@ export default function FormulaireApplication() {
                     >
                       <span className="d-flex align-items-center">
                         <i className="fas fa-file me-2"></i>
-                        {file.name}
+                        <span className="file-name-truncate">{file.name}</span>
                         <button
                           type="button"
                           className="btn btn-sm btn-danger ms-auto"
                           onClick={() => removeTranscriptFile(index)}
                         >
                           <i className="fas fa-trash me-1"></i>
-                          Supprimer
+                          <span className="d-sm-inline">Supprimer</span>
                         </button>
                       </span>
                     </div>
@@ -899,10 +1012,10 @@ export default function FormulaireApplication() {
                 </div>
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
-                  Téléchargez vos diplômes (jusqu'à 6){" "}
+                  Diplômes (max 6){" "}
                   <span style={{ color: "red", background: "transparent" }}>
                     *
                   </span>{" "}
@@ -933,14 +1046,14 @@ export default function FormulaireApplication() {
                     >
                       <span className="d-flex align-items-center">
                         <i className="fas fa-file me-2"></i>
-                        {file.name}
+                        <span className="file-name-truncate">{file.name}</span>
                         <button
                           type="button"
                           className="btn btn-sm btn-danger ms-auto"
                           onClick={() => removeDiplomaFile(index)}
                         >
                           <i className="fas fa-trash me-1"></i>
-                          Supprimer
+                          <span className="d-sm-inline">Supprimer</span>
                         </button>
                       </span>
                     </div>
@@ -948,9 +1061,9 @@ export default function FormulaireApplication() {
                 </div>
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
-                <label>Téléchargez votre CV (Optionnel)</label>
+                <label>CV (Optionnel)</label>
                 <div className="file-input-wrapper">
                   <input
                     type="file"
@@ -969,14 +1082,14 @@ export default function FormulaireApplication() {
                   <div className="selected-file mt-2 p-2 border rounded">
                     <span className="d-flex align-items-center">
                       <i className="fas fa-file me-2"></i>
-                      {cvFile.name}
+                      <span className="file-name-truncate">{cvFile.name}</span>
                       <button
                         type="button"
                         className="btn btn-sm btn-danger ms-auto"
                         onClick={removeCvFile}
                       >
                         <i className="fas fa-trash me-1"></i>
-                        Supprimer
+                        <span className="d-sm-inline">Supprimer</span>
                       </button>
                     </span>
                   </div>
@@ -984,9 +1097,9 @@ export default function FormulaireApplication() {
               </div>
             </div>
 
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
-                <label>Lettre de recommandation (optionnel)</label>
+                <label>Lettre recommandation (optionnel)</label>
                 <div className="file-input-wrapper">
                   <input
                     type="file"
@@ -1008,14 +1121,14 @@ export default function FormulaireApplication() {
                   <div className="selected-file mt-2 p-2 border rounded">
                     <span className="d-flex align-items-center">
                       <i className="fas fa-file me-2"></i>
-                      {recommendationFile.name}
+                      <span className="file-name-truncate">{recommendationFile.name}</span>
                       <button
                         type="button"
                         className="btn btn-sm btn-danger ms-auto"
                         onClick={removeRecommendationFile}
                       >
                         <i className="fas fa-trash me-1"></i>
-                        Supprimer
+                        <span className="d-sm-inline">Supprimer</span>
                       </button>
                     </span>
                   </div>
@@ -1023,10 +1136,10 @@ export default function FormulaireApplication() {
               </div>
             </div>
 
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
                 <label>
-                  Ajoutez votre photo{" "}
+                  Photo{" "}
                   <span style={{ color: "red", background: "transparent" }}>
                     *
                   </span>
@@ -1049,23 +1162,23 @@ export default function FormulaireApplication() {
                   <div className="selected-file mt-2 p-2 border rounded">
                     <span className="d-flex align-items-center">
                       <i className="fas fa-image me-2"></i>
-                      {photoFile.name}
+                      <span className="file-name-truncate">{photoFile.name}</span>
                       <button
                         type="button"
                         className="btn btn-sm btn-danger ms-auto"
                         onClick={removePhotoFile}
                       >
                         <i className="fas fa-trash me-1"></i>
-                        Supprimer
+                        <span className="d-sm-inline">Supprimer</span>
                       </button>
                     </span>
                   </div>
                 )}
               </div>
             </div>
-            <div className="col-xl-6 col-lg-6">
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
               <div className="tp-contact-input schedule p-relative">
-                <label>Attestation ou certificat (optionnel)</label>
+                <label>Attestation/certificat (optionnel)</label>
                 <div className="file-input-wrapper">
                   <input
                     type="file"
@@ -1087,14 +1200,14 @@ export default function FormulaireApplication() {
                   <div className="selected-file mt-2 p-2 border rounded">
                     <span className="d-flex align-items-center">
                       <i className="fas fa-file me-2"></i>
-                      {certificateFile.name}
+                      <span className="file-name-truncate">{certificateFile.name}</span>
                       <button
                         type="button"
                         className="btn btn-sm btn-danger ms-auto"
                         onClick={removeCertificateFile}
                       >
                         <i className="fas fa-trash me-1"></i>
-                        Supprimer
+                        <span className="d-sm-inline">Supprimer</span>
                       </button>
                     </span>
                   </div>
