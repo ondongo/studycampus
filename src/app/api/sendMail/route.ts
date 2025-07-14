@@ -69,7 +69,7 @@ export async function POST(req: Request) {
           name: "Responsable Admissions",
         },
         {
-          email: "odigitalblessing@gmail.com",
+          email: "Blessingstravels01@gmail.com",
           name: "Responsable Admissions",
         },
      

@@ -23,7 +23,7 @@ export default {
     async jwt({ token, user }) {
       if (user) {
         console.log("XXXXXX", user);
-        if (user.email === "nathankolime2@gmail.com") {
+        if (user.email === "Blessingstravels01@gmail.com") {
           (token as Token).role = "admin";
         } else if (user.email === "prince.ondongo@ism.edu.sn") {
           (token as Token).role = "admin";
