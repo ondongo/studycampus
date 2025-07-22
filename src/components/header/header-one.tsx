@@ -54,7 +54,7 @@ export default function HeaderOne() {
                 </div>
               </div>
                   <div className="tp-header-btn d-none d-md-block ml-30">
-                    <Link href="https://calendly.com/gloireondongo1205/prise-de-contact?back=1&month=2025-05">
+                    <Link href="https://calendly.com/blessingstravels01/30min">
                     {t('book_appointment')}
                     </Link>
                   </div>
